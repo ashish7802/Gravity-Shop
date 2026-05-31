@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Plus, Minus, Trash2 } from "lucide-react";
 import { CartItem, useAppStore } from "@/store/useAppStore";
 import { SafeImage } from "@/components/ui/SafeImage";
 
@@ -15,63 +14,69 @@ export function CartItemCard({ item, index }: CartItemCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, scale: 0.9, x: 20 }}
-      transition={{ duration: 0.4, delay: index * 0.1, type: "spring", stiffness: 300, damping: 25 }}
-      className="relative p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md overflow-hidden group"
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 80, 
+        damping: 24,
+        delay: index * 0.05 
+      }}
+      className="p-4 bg-[#0e0e12] border border-[#ffffff08] rounded-sm relative overflow-hidden group flex gap-4"
     >
-      {/* Background glow specific to category */}
-      <div 
-        className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500
-          ${item.category === "Sneakers" ? "bg-neon-cyan" : 
-            item.category === "Gaming" ? "bg-neon-magenta" : "bg-neon-purple"}
-        `}
-      />
-
-      <div className="flex gap-4 relative z-10">
-        <div className="w-16 h-16 rounded-lg bg-space-900/50 flex items-center justify-center relative overflow-hidden border border-white/5">
-          <SafeImage src={item.image} alt={item.name} fill className="object-contain p-2" />
+      {/* Product Image Stage */}
+      <div className="w-16 h-16 bg-black/10 flex items-center justify-center relative overflow-hidden border border-white/5 rounded-sm">
+        <SafeImage src={item.image} alt={item.name} fill className="object-contain p-2" />
+      </div>
+      
+      {/* BOM Details Content */}
+      <div className="flex-1 flex flex-col justify-between">
+        <div className="flex justify-between items-start">
+          <div>
+            <p className="font-sans font-bold text-white text-xs uppercase tracking-tight">{item.name}</p>
+            <p className="font-mono text-[9px] text-gray-500 uppercase tracking-widest mt-0.5">
+              ID // {item.id.slice(-8).toUpperCase()}
+            </p>
+          </div>
+          
+          {/* Delete Button styled as technical deletion */}
+          <button 
+            onClick={() => removeFromCart(item.id)}
+            onMouseEnter={() => setHoveringInteractive(true)}
+            onMouseLeave={() => setHoveringInteractive(false)}
+            className="font-mono text-[9px] text-gray-500 hover:text-[#ffa000] border border-white/5 hover:border-[#ffa000]/30 px-2 py-0.5 bg-white/5 rounded-sm transition-colors uppercase"
+          >
+            [ DEL ]
+          </button>
         </div>
-        
-        <div className="flex-1 flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="font-display font-bold text-white text-sm">{item.name}</p>
-              <p className="text-xs text-gray-400">{item.category}</p>
-            </div>
+
+        <div className="flex justify-between items-center mt-3 pt-2 border-t border-white/5">
+          <p className="font-mono text-xs text-[#bbf3ff] font-medium">
+            ${(item.price * item.quantity).toFixed(2)}
+          </p>
+          
+          {/* Boxy parameter parameter adjustments */}
+          <div className="flex items-center bg-black/30 border border-white/5 rounded-sm font-mono text-[10px]">
             <button 
-              onClick={() => removeFromCart(item.id)}
+              onClick={() => updateQuantity(item.id, item.quantity - 1)}
               onMouseEnter={() => setHoveringInteractive(true)}
               onMouseLeave={() => setHoveringInteractive(false)}
-              className="text-gray-500 hover:text-neon-magenta transition-colors"
+              className="px-2 py-1 text-gray-400 hover:text-white hover:bg-white/5 transition-all"
             >
-              <Trash2 className="w-4 h-4" />
+              -
             </button>
-          </div>
-
-          <div className="flex justify-between items-end">
-            <p className="font-mono text-neon-cyan font-bold">${item.price.toFixed(2)}</p>
-            
-            <div className="flex items-center gap-3 bg-space-900/50 rounded-full px-2 py-1 border border-white/10">
-              <button 
-                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                onMouseEnter={() => setHoveringInteractive(true)}
-                onMouseLeave={() => setHoveringInteractive(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Minus className="w-3 h-3" />
-              </button>
-              <span className="text-xs font-bold text-white w-4 text-center">{item.quantity}</span>
-              <button 
-                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                onMouseEnter={() => setHoveringInteractive(true)}
-                onMouseLeave={() => setHoveringInteractive(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Plus className="w-3 h-3" />
-              </button>
-            </div>
+            <span className="px-3 text-white border-l border-r border-white/5 min-w-[24px] text-center">
+              {String(item.quantity).padStart(2, "0")}
+            </span>
+            <button 
+              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+              onMouseEnter={() => setHoveringInteractive(true)}
+              onMouseLeave={() => setHoveringInteractive(false)}
+              className="px-2 py-1 text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+            >
+              +
+            </button>
           </div>
         </div>
       </div>

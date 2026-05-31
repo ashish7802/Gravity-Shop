@@ -1,97 +1,93 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { DollarSign, Package, Users, Activity, ArrowUpRight } from "lucide-react";
 import { GlowingChart, HolographicDonutChart } from "@/components/admin/GlowingChart";
 
-const kpis = [
-  { title: "Total Revenue", value: "$124,563.00", change: "+14.5%", icon: DollarSign, color: "text-neon-cyan", glow: "shadow-[0_0_15px_#00f0ff]" },
-  { title: "Active Orders", value: "842", change: "+5.2%", icon: Package, color: "text-neon-magenta", glow: "shadow-[0_0_15px_#ff00aa]" },
-  { title: "Total Users", value: "12,493", change: "+22.4%", icon: Users, color: "text-neon-purple", glow: "shadow-[0_0_15px_#9d00ff]" },
-  { title: "System Load", value: "24%", change: "-2.1%", icon: Activity, color: "text-white", glow: "shadow-[0_0_15px_#ffffff]" },
-];
-
 export default function AdminDashboard() {
+  const telemetry = [
+    { label: "API LATENCY", value: "12MS", status: "NOMINAL", color: "text-[#bbf3ff]" },
+    { label: "DATABASE METRIC", value: "CONNECTED", status: "OK", color: "text-emerald-400" },
+    { label: "CACHE HIT RATE", value: "99.8%", status: "OPTIMIZED", color: "text-[#bbf3ff]" },
+    { label: "AGGREGATE LOAD", value: "24.1%", status: "NOMINAL", color: "text-gray-300" }
+  ];
+
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
-      <div className="flex justify-between items-end">
+    <div className="max-w-7xl mx-auto space-y-8 font-mono text-[10px]">
+      
+      {/* Title block */}
+      <div className="flex justify-between items-baseline pb-6 border-b border-white/5">
         <div>
-          <motion.h1 
-            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-            className="font-display font-bold text-4xl tracking-wider text-white uppercase"
-          >
-            Command Center
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-            className="text-gray-400 font-mono mt-2"
-          >
-            System Status: <span className="text-neon-cyan shadow-[0_0_8px_#00f0ff]">OPTIMAL</span>
-          </motion.p>
+          <h1 className="font-sans font-black text-3xl tracking-tight text-white uppercase leading-none mb-2">
+            OPERATIONS CONSOLE
+          </h1>
+          <p className="text-gray-500 tracking-wider">
+            SYSTEM_PROTOCOL // ACTIVE_METRICS
+          </p>
+        </div>
+        <div className="flex gap-4">
+          <span className="text-[#bbf3ff]">HOST // SECURE</span>
+          <span className="text-emerald-400">DB // ACTIVE</span>
         </div>
       </div>
 
-      {/* KPI Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {kpis.map((kpi, idx) => {
-          const Icon = kpi.icon;
-          return (
-            <motion.div
-              key={kpi.title}
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}
-              className="glass-panel p-6 rounded-2xl relative overflow-hidden group"
-            >
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Icon className={`w-16 h-16 ${kpi.color}`} />
-              </div>
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <div className="flex justify-between items-start mb-4">
-                  <div className={`p-2 rounded-lg bg-black/50 ${kpi.glow}`}>
-                    <Icon className={`w-5 h-5 ${kpi.color}`} />
-                  </div>
-                  <span className="flex items-center gap-1 text-neon-cyan font-mono text-sm bg-neon-cyan/10 px-2 py-1 rounded-md">
-                    <ArrowUpRight className="w-3 h-3" /> {kpi.change}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-gray-400 font-mono text-sm uppercase tracking-wider">{kpi.title}</h3>
-                  <p className="font-display font-bold text-3xl text-white mt-1">{kpi.value}</p>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
+      {/* High-density Telemetry Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 border border-white/5">
+        {telemetry.map((item, idx) => (
+          <motion.div
+            key={item.label}
+            initial={{ opacity: 0, y: 15 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.8, delay: idx * 0.05, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-[#0e0e12] p-6 flex flex-col justify-between"
+          >
+            <div>
+              <p className="text-gray-500 tracking-widest uppercase mb-1">{item.label}</p>
+              <p className="text-xl font-bold text-white tracking-tight mt-1">{item.value}</p>
+            </div>
+            <div className="mt-6 flex justify-between items-center text-[9px] border-t border-white/5 pt-3">
+              <span className="text-gray-500">STATUS //</span>
+              <span className={`${item.color} font-medium`}>{item.status}</span>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
-      {/* Charts & Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 h-[400px]">
+      {/* Charts (Vercel Style Grid) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-white/5 border border-white/5">
+        <div className="lg:col-span-2 h-[350px] bg-[#0e0e12] p-6">
           <GlowingChart />
         </div>
-        <div className="h-[400px]">
+        <div className="h-[350px] bg-[#0e0e12] p-6">
           <HolographicDonutChart />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 h-[400px]">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="glass-panel rounded-2xl p-6 h-full flex flex-col"
-        >
-          <h3 className="font-display font-bold text-lg text-white mb-6">Live Feed</h3>
-          <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2">
-            {[1,2,3,4,5].map((i) => (
-              <div key={i} className="flex items-start gap-4 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                <div className="w-2 h-2 mt-2 rounded-full bg-neon-magenta shadow-[0_0_8px_#ff00aa] animate-pulse" />
-                <div>
-                  <p className="text-sm text-white">Order <span className="font-mono text-neon-cyan">#GRV-{9000 + i}</span></p>
-                  <p className="text-xs text-gray-400 mt-1">Payment authorized. Preparing for dispatch.</p>
-                </div>
+      {/* Live Feed Terminal */}
+      <motion.div 
+        initial={{ opacity: 0, y: 15 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="bg-[#0e0e12] border border-white/5 p-6 h-[300px] flex flex-col"
+      >
+        <div className="flex justify-between items-baseline mb-6 pb-3 border-b border-white/5">
+          <h3 className="font-sans font-bold text-xs tracking-wider text-white uppercase">Live Event Logs</h3>
+          <span className="text-[#ffa000]">REALTIME // MONITORING</span>
+        </div>
+
+        <div className="flex-1 overflow-y-auto no-scrollbar space-y-3">
+          {[1,2,3,4,5].map((i) => (
+            <div key={i} className="flex items-start justify-between py-2 border-b border-white/[0.02]">
+              <div className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#ffa000] animate-pulse" />
+                <span>ORDER // PROTOCOL_ACQUIRED</span>
+                <span className="text-gray-500">#GRV-{9000 + i}</span>
               </div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+              <span className="text-gray-500">SECURE_LINK // NOMINAL_DISPATCH</span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
     </div>
   );
 }

@@ -10,19 +10,18 @@ import {
   Users, 
   BarChart3, 
   Settings, 
-  LogOut,
-  Sparkles
+  LogOut
 } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 
 const navItems = [
-  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Products", href: "/admin/products", icon: Package },
-  { name: "Inventory", href: "/admin/inventory", icon: Package },
-  { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
-  { name: "Users", href: "/admin/users", icon: Users },
-  { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
+  { name: "CONSOLE", href: "/admin", icon: LayoutDashboard },
+  { name: "PRODUCTS", href: "/admin/products", icon: Package },
+  { name: "INVENTORY", href: "/admin/inventory", icon: Package },
+  { name: "ORDERS", href: "/admin/orders", icon: ShoppingCart },
+  { name: "USERS", href: "/admin/users", icon: Users },
+  { name: "ANALYTICS", href: "/admin/analytics", icon: BarChart3 },
+  { name: "SETTINGS", href: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
@@ -30,19 +29,14 @@ export function AdminSidebar() {
   const { logout, setHoveringInteractive } = useAppStore();
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-space-900/80 backdrop-blur-3xl border-r border-white/10 z-[100] flex flex-col pointer-events-auto">
-      {/* Cinematic Edge Lighting */}
-      <div className="absolute top-0 right-0 w-[1px] h-full bg-gradient-to-b from-neon-cyan/50 via-neon-magenta/20 to-transparent" />
-      
+    <aside className="fixed left-0 top-0 h-full w-64 bg-[#0e0e12] border-r border-white/5 z-[100] flex flex-col pointer-events-auto">
       {/* Brand Header */}
-      <div className="p-6 flex items-center gap-3 border-b border-white/5 relative overflow-hidden group">
-        <div className="absolute -inset-10 bg-neon-cyan/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
-        <Sparkles className="w-6 h-6 text-neon-cyan relative z-10" />
-        <h1 className="font-display font-bold text-xl text-white tracking-widest uppercase relative z-10">Gravity OS</h1>
+      <div className="p-6 border-b border-white/5 font-mono text-xs tracking-[0.25em] text-white">
+        GRAVITY // OS
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto no-scrollbar font-mono text-[11px] tracking-wide">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -55,16 +49,16 @@ export function AdminSidebar() {
               onMouseLeave={() => setHoveringInteractive(false)}
               className="relative block"
             >
-              <div className={`relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${isActive ? 'text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
+              <div className={`relative flex items-center gap-3 px-4 py-3 rounded-none transition-all duration-300 ${isActive ? 'text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
                 {isActive && (
                   <motion.div
                     layoutId="admin-sidebar-active"
-                    className="absolute inset-0 bg-white/10 rounded-xl border border-white/10 backdrop-blur-md"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className="absolute inset-0 bg-white/5 border border-white/10 rounded-sm"
+                    transition={{ type: "spring", stiffness: 80, damping: 24 }}
                   />
                 )}
-                <Icon className={`w-5 h-5 relative z-10 ${isActive ? 'text-neon-cyan drop-shadow-[0_0_8px_#00f0ff]' : ''}`} />
-                <span className="font-mono text-sm tracking-wide relative z-10">{item.name}</span>
+                <Icon className="w-4 h-4 relative z-10" />
+                <span className="relative z-10">{item.name}</span>
               </div>
             </Link>
           );
@@ -72,15 +66,15 @@ export function AdminSidebar() {
       </nav>
 
       {/* Footer / Logout */}
-      <div className="p-4 border-t border-white/5">
+      <div className="p-4 border-t border-white/5 font-mono text-[11px]">
         <button 
           onClick={logout}
           onMouseEnter={() => setHoveringInteractive(true)}
           onMouseLeave={() => setHoveringInteractive(false)}
-          className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300"
+          className="flex items-center gap-3 px-4 py-3 w-full rounded-none text-gray-500 hover:text-[#ffa000] border border-transparent hover:border-white/5 hover:bg-white/5 transition-all duration-300"
         >
-          <LogOut className="w-5 h-5" />
-          <span className="font-mono text-sm tracking-wide">Disconnect</span>
+          <LogOut className="w-4 h-4" />
+          <span>TERMINATE // OUT</span>
         </button>
       </div>
     </aside>

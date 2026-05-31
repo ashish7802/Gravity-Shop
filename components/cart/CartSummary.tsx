@@ -43,28 +43,30 @@ export function CartSummary() {
   };
 
   return (
-    <div className="mt-8 pt-6 border-t border-white/10 relative z-10">
+    <div className="pt-6 border-t border-white/5 relative z-10 font-mono text-[10px]">
       <div className="space-y-3 mb-6">
-        <div className="flex justify-between text-sm text-gray-400">
-          <span>Subtotal</span>
-          <span className="font-mono text-white">${cartTotal.toFixed(2)}</span>
+        <div className="flex justify-between text-gray-500">
+          <span>SUBTOTAL</span>
+          <span className="text-[#e2e8f0] font-medium">${cartTotal.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between text-sm text-gray-400">
-          <span>Estimated Tax</span>
-          <span className="font-mono text-white">${tax.toFixed(2)}</span>
+        <div className="flex justify-between text-gray-500">
+          <span>ESTIMATED TAX [08%]</span>
+          <span className="text-[#e2e8f0] font-medium">${tax.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between text-sm text-gray-400">
-          <span>Shipping (Quantum Relay)</span>
-          <span className="font-mono text-white">${shipping.toFixed(2)}</span>
+        <div className="flex justify-between text-gray-500">
+          <span>SHIPPING [RELAY]</span>
+          <span className="text-[#e2e8f0] font-medium">${shipping.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between items-end pt-4 border-t border-white/5">
-          <span className="text-gray-300 font-bold">Total</span>
-          <span className="font-mono text-neon-cyan font-bold text-2xl">${total.toFixed(2)}</span>
+        <div className="flex justify-between items-baseline pt-4 border-t border-white/5">
+          <span className="text-white font-bold tracking-wider">AGGREGATE TOTAL</span>
+          <span className="text-[#bbf3ff] font-bold text-lg">${total.toFixed(2)}</span>
         </div>
       </div>
 
       {error && (
-        <p className="text-red-400 text-xs font-mono mb-2 text-center">{error}</p>
+        <p className="text-[#ffa000] text-[9px] font-mono mb-3 text-center uppercase tracking-wider">
+          ERROR // {error}
+        </p>
       )}
       
       <button 
@@ -72,19 +74,16 @@ export function CartSummary() {
         disabled={isProcessing || cartItems.length === 0}
         onMouseEnter={() => setHoveringInteractive(true)}
         onMouseLeave={() => setHoveringInteractive(false)}
-        className="w-full py-4 rounded-xl bg-white text-space-900 font-bold tracking-widest relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="w-full py-4 border border-white/20 hover:border-white hover:bg-white hover:text-black font-mono tracking-widest text-[9px] transition-all duration-300 rounded-sm disabled:opacity-30 disabled:cursor-not-allowed"
       >
-        <span className="relative z-10 flex items-center justify-center gap-2">
-          {isProcessing ? (
-            <>
-              <div className="w-4 h-4 rounded-full border-2 border-space-900 border-t-transparent animate-spin" />
-              SECURING LINK...
-            </>
-          ) : (
-            "INITIALIZE CHECKOUT"
-          )}
-        </span>
-        <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan via-white to-neon-magenta opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {isProcessing ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="w-2 h-2 rounded-full border border-black border-t-transparent animate-spin" />
+            SECURING LINK MATRIX...
+          </span>
+        ) : (
+          "INITIATE_FULFILLMENT_PROTOCOL"
+        )}
       </button>
     </div>
   );

@@ -27,19 +27,19 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-space-900 text-white flex overflow-hidden">
+    <div className="min-h-screen bg-[#08080a] text-white flex overflow-hidden">
       {/* Background Holographic Grid */}
-      <div className="fixed inset-0 pointer-events-none z-0 opacity-20"
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-10"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)`,
           backgroundSize: '50px 50px',
           transform: 'perspective(1000px) rotateX(60deg) translateY(-100px) translateZ(-200px)',
         }}
       />
       
       {/* Main Ambient Glow */}
-      <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-neon-cyan/20 blur-[150px] rounded-full pointer-events-none z-0" />
-      <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-neon-purple/20 blur-[150px] rounded-full pointer-events-none z-0" />
+      <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-white/5 blur-[150px] rounded-full pointer-events-none z-0" />
+      <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-white/5 blur-[150px] rounded-full pointer-events-none z-0" />
 
       <AdminSidebar />
       

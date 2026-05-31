@@ -72,7 +72,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
   };
 
   return (
-    <main className="min-h-screen bg-[#030014] text-white selection:bg-neon-cyan/30">
+    <main className="min-h-screen bg-[#08080a] text-[#e2e8f0] selection:bg-[#bbf3ff]/30 selection:text-[#bbf3ff]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
       <div className="pt-32 pb-24">

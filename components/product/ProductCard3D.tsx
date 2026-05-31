@@ -1,152 +1,122 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { SafeImage } from "@/components/ui/SafeImage";
-import { Star, ShoppingCart } from "lucide-react";
-import React, { useState } from "react";
-import { useAppStore } from "@/store/useAppStore";
-import { CartFlyAnimation } from "@/components/animations/CartFlyAnimation";
+import Link from "next/link";
+import React from "react";
 
 export interface Product {
   id: string;
   name: string;
   category: string;
-  price: string;
-  rating: number;
+  price: number | string;
   image: string;
+  tags?: string[];
 }
 
 interface ProductCard3DProps {
   product: Product;
-  index: number;
 }
 
-export function ProductCard3D({ product, index }: ProductCard3DProps) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+export const cardVariants: Variants = {
+  initial: { 
+    opacity: 0, 
+    scale: 0.96, 
+    y: 40 
+  },
+  animate: { 
+    opacity: 1, 
+    scale: 1, 
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1]
+    }
+  }
+};
 
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
-
-  const { setHoveringInteractive, addToCart } = useAppStore();
-  const [flyAnimId, setFlyAnimId] = useState<string | null>(null);
-  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    const rect = e.currentTarget.getBoundingClientRect();
-    setStartPos({
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2,
-    });
-    setFlyAnimId(product.id + Date.now());
-  };
-
-  const onFlyComplete = () => {
-    setFlyAnimId(null);
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: parseFloat(product.price.replace('$', '')),
-      category: product.category,
-      image: product.image
-    });
-  };
+export function ProductCard3D({ product }: ProductCard3DProps) {
+  const formattedPrice = typeof product.price === "number" 
+    ? `$${product.price.toFixed(2)}` 
+    : String(product.price);
 
   return (
-    <>
-      {flyAnimId && (
-        <CartFlyAnimation
-          id={flyAnimId}
-          image={product.image}
-          startPos={startPos}
-          onComplete={onFlyComplete}
-        />
-      )}
+    <Link href={`/product/${product.id}`} className="block h-full cursor-pointer select-none">
       <motion.div
-        layout
-        initial={{ opacity: 0, scale: 0.9, y: 30 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        transition={{ duration: 0.5, delay: index * 0.05 }}
-        className="perspective-1000 w-full h-full"
+        variants={cardVariants}
+        whileHover="hover"
+        className="group relative h-full flex flex-col bg-[#0e0e12] border border-white/5 hover:border-white/20 transition-colors duration-500 overflow-hidden"
       >
+        {/* Specular Light Sweep overlay */}
         <motion.div
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          className="relative rounded-2xl glass-panel neon-border p-6 flex flex-col gap-6 cursor-pointer group h-full"
-        >
-          <div 
-            className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 to-transparent pointer-events-none"
-            style={{ transform: "translateZ(1px)" }}
-          />
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none z-10"
+          initial={{ x: "-100%" }}
+          variants={{
+            hover: { x: "100%" }
+          }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        />
 
-          <div 
-            className="relative h-48 w-full flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
-            style={{ transform: "translateZ(50px)" }}
+        {/* Product Image Stage */}
+        <div className="relative h-64 w-full flex items-center justify-center p-8 bg-black/10">
+          <motion.div
+            className="relative w-full h-full"
+            variants={{
+              initial: { scale: 1 },
+              hover: { scale: 1.05 }
+            }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="absolute inset-0 bg-neon-cyan/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <SafeImage
               src={product.image}
               alt={product.name}
               fill
-              className="object-contain drop-shadow-[0_20px_20px_rgba(0,0,0,0.8)]"
+              className="object-contain filter transition-all duration-700"
+              sizes="(max-width: 768px) 100vw, 25vw"
             />
+          </motion.div>
+        </div>
+
+        {/* Product Details Section */}
+        <div className="flex flex-col flex-1 p-6 border-t border-white/5 relative z-20">
+          <div className="flex justify-between items-baseline mb-2">
+            <span className="font-mono text-[9px] text-gray-500 uppercase tracking-[0.25em]">
+              {product.category}
+            </span>
+            <span className="font-mono text-xs text-[#bbf3ff] font-bold">
+              {formattedPrice}
+            </span>
           </div>
 
-          <div 
-            className="flex flex-col gap-2 mt-auto"
-            style={{ transform: "translateZ(30px)" }}
+          <motion.h3 
+            className="font-sans font-bold text-[18px] text-[#e2e8f0] group-hover:text-white transition-colors uppercase leading-snug"
+            variants={{
+              initial: { y: 0 },
+              hover: { y: -2 }
+            }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex justify-between items-start">
-              <span className="text-xs font-mono text-neon-cyan tracking-widest uppercase">
-                {product.category}
-              </span>
-              <div className="flex items-center gap-1 bg-black/50 px-2 py-1 rounded-md border border-white/10">
-                <Star className="w-3 h-3 text-neon-magenta fill-neon-magenta" />
-                <span className="text-xs font-bold text-white">{product.rating}</span>
-              </div>
-            </div>
+            {product.name}
+          </motion.h3>
 
-            <h3 className="font-display font-bold text-xl text-white group-hover:text-neon-cyan transition-colors">
-              {product.name}
-            </h3>
-
-            <div className="flex items-center justify-between mt-2">
-              <p className="font-mono font-bold text-xl text-white">{product.price}</p>
-              <button 
-                onClick={handleAddToCart}
-                onMouseEnter={() => setHoveringInteractive(true)}
-                onMouseLeave={() => setHoveringInteractive(false)}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-neon-cyan text-white hover:text-space-900 flex items-center justify-center transition-colors backdrop-blur-md z-20"
-              >
-                <ShoppingCart className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </motion.div>
+          {/* Technical Telemetry Metadata - Fades In on Hover */}
+          <motion.div
+            className="mt-auto pt-4 border-t border-white/5 flex flex-col gap-1 overflow-hidden"
+            variants={{
+              initial: { opacity: 0, height: 0 },
+              hover: { opacity: 1, height: "auto" }
+            }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="font-mono text-[9px] text-gray-600 tracking-wider uppercase">
+              ID // {product.id.slice(-6).toUpperCase()}
+            </span>
+            <span className="font-mono text-[9px] text-gray-600 tracking-wider uppercase">
+              TAGS // {product.tags ? product.tags.join(" // ") : "HARDWARE"}
+            </span>
+          </motion.div>
+        </div>
       </motion.div>
-    </>
+    </Link>
   );
 }

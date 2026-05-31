@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Edit2, Trash2, Search, Filter } from "lucide-react";
+import { Search, Filter } from "lucide-react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ProductDataGrid() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [products, setProducts] = useState<any[]>([]);
@@ -25,104 +23,98 @@ export function ProductDataGrid() {
 
   if (loading) {
     return (
-      <div className="glass-panel rounded-2xl overflow-hidden flex flex-col p-8 items-center justify-center min-h-[400px]">
-        <span className="text-neon-cyan font-mono animate-pulse">LOADING ASSETS...</span>
+      <div className="bg-[#0e0e12] border border-white/5 flex flex-col p-8 items-center justify-center min-h-[400px]">
+        <span className="text-[#bbf3ff] font-mono text-xs animate-pulse tracking-[0.2em]">FETCHING INVENTORY REGISTRY...</span>
       </div>
     );
   }
 
   return (
-    <div className="glass-panel rounded-2xl overflow-hidden flex flex-col">
+    <div className="bg-[#0e0e12] border border-white/5 rounded-none flex flex-col font-mono text-[10px]">
+      
       {/* Toolbar */}
-      <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/20">
-        <div className="relative w-64 group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-neon-cyan transition-colors" />
+      <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/10">
+        <div className="relative w-64">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500" />
           <input 
             type="text" 
-            placeholder="Search assets..." 
-            className="w-full bg-black/50 border border-white/10 rounded-lg py-2 pl-10 pr-4 text-white text-sm focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan outline-none transition-all placeholder:text-gray-600 font-mono"
+            placeholder="FILTER REGISTRY..." 
+            className="w-full bg-black/35 border border-white/5 rounded-sm py-2 pl-10 pr-4 text-white text-[10px] focus:border-white/20 outline-none transition-all placeholder:text-gray-600 font-mono tracking-widest"
           />
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-gray-300 hover:text-white transition-colors">
-          <Filter className="w-4 h-4" /> Filter
+        <button className="flex items-center gap-2 px-4 py-2 border border-white/5 hover:border-white/20 hover:bg-white/5 text-[10px] text-gray-400 hover:text-white transition-all rounded-sm tracking-widest">
+          <Filter className="w-3.5 h-3.5" /> FILTER
         </button>
       </div>
 
       {/* Grid Header */}
-      <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-xs font-mono text-gray-500 uppercase tracking-wider bg-black/40">
-        <div className="col-span-4">Asset Name</div>
-        <div className="col-span-2">Category</div>
-        <div className="col-span-2">Value</div>
-        <div className="col-span-2">Stock Level</div>
-        <div className="col-span-1">Status</div>
-        <div className="col-span-1 text-right">Actions</div>
+      <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/5 text-gray-500 uppercase tracking-widest bg-black/20 font-bold">
+        <div className="col-span-4">ASSET // IDENTIFIER</div>
+        <div className="col-span-2">CATEGORY</div>
+        <div className="col-span-2">NOMINAL VALUE</div>
+        <div className="col-span-2">STOCK MATRIX</div>
+        <div className="col-span-2 text-right">STATUS // TELEMETRY</div>
       </div>
 
       {/* Grid Body */}
       <div className="divide-y divide-white/5">
         {products.map((product, idx) => {
-          const status = product.stock > 10 ? "Active" : product.stock > 0 ? "Low Stock" : "Depleted";
+          const status = product.stock > 10 ? "OK" : product.stock > 0 ? "ALERT" : "DEPLETED";
+          const formattedPrice = typeof product.price === "number" ? product.price : parseFloat(product.price);
           
           return (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.05 }}
-            key={product._id} 
-            className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-white/5 transition-colors group relative overflow-hidden"
-          >
-            {/* Hover Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/0 via-neon-cyan/5 to-transparent translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 pointer-events-none" />
-
-            <div className="col-span-4 flex items-center gap-3 relative z-10">
-              <div className="w-10 h-10 rounded bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden relative group-hover:border-neon-cyan/50 transition-colors">
-                {product.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-5 h-5 border-2 border-gray-600 rounded-sm group-hover:border-neon-cyan group-hover:shadow-[0_0_8px_#00f0ff] transition-all" />
-                )}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: idx * 0.04, ease: [0.16, 1, 0.3, 1] }}
+              key={product._id} 
+              className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-white/[0.02] transition-colors"
+            >
+              {/* Asset Identifier */}
+              <div className="col-span-4 flex items-center gap-3">
+                <div className="w-8 h-8 bg-black/20 border border-white/5 flex items-center justify-center overflow-hidden rounded-sm">
+                  {product.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={product.image} alt={product.name} className="w-full h-full object-contain p-1" />
+                  )}
+                </div>
+                <div>
+                  <p className="font-sans font-bold text-white text-xs uppercase tracking-tight">{product.name}</p>
+                  <p className="text-gray-500 text-[9px] mt-0.5">ID: {product._id.slice(-8).toUpperCase()}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-bold text-white text-sm">{product.name}</p>
-                <p className="text-xs text-gray-500 font-mono">ID: {product._id.substring(0, 6)}</p>
+              
+              {/* Category */}
+              <div className="col-span-2">
+                <span className="text-gray-400 uppercase">{product.category}</span>
               </div>
-            </div>
-            
-            <div className="col-span-2 relative z-10">
-              <span className="text-sm text-gray-300 font-mono">{product.category}</span>
-            </div>
-            
-            <div className="col-span-2 relative z-10">
-              <span className="text-sm font-bold text-white tracking-wider">${parseFloat(product.price).toFixed(2)}</span>
-            </div>
-            
-            <div className="col-span-2 relative z-10">
-              <span className="text-sm text-gray-300 font-mono">{product.stock} units</span>
-            </div>
-            
-            <div className="col-span-1 relative z-10">
-              <span className={`text-xs px-2 py-1 rounded font-mono ${
-                status === "Active" ? "bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/20" :
-                status === "Low Stock" ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20" :
-                "bg-red-500/10 text-red-400 border border-red-500/20"
-              }`}>
-                {status}
-              </span>
-            </div>
-            
-            <div className="col-span-1 flex justify-end gap-2 relative z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button className="p-1.5 text-gray-400 hover:text-neon-cyan hover:bg-neon-cyan/10 rounded transition-colors">
-                <Edit2 className="w-4 h-4" />
-              </button>
-              <button className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors">
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
-          </motion.div>
-        )})}
+              
+              {/* Value */}
+              <div className="col-span-2">
+                <span className="text-white font-medium">${formattedPrice.toFixed(2)}</span>
+              </div>
+              
+              {/* Stock */}
+              <div className="col-span-2">
+                <span className="text-gray-400">{product.stock} UNITS</span>
+              </div>
+              
+              {/* Status */}
+              <div className="col-span-2 text-right">
+                <span className={`px-2 py-0.5 border font-bold text-[9px] rounded-sm ${
+                  status === "OK" ? "border-emerald-500/20 text-emerald-400 bg-emerald-500/5" :
+                  status === "ALERT" ? "border-[#ffa000]/20 text-[#ffa000] bg-[#ffa000]/5" :
+                  "border-red-500/20 text-red-400 bg-red-500/5"
+                }`}>
+                  {status}
+                </span>
+              </div>
+            </motion.div>
+          );
+        })}
+        
         {products.length === 0 && (
-          <div className="p-8 text-center text-gray-500 font-mono">No assets found. Upload one to begin.</div>
+          <div className="p-8 text-center text-gray-500 tracking-wider">NO REGISTERED INVENTORIES IN DATABASE.</div>
         )}
       </div>
     </div>

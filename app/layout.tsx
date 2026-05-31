@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { MagneticCursor } from "@/components/ui/MagneticCursor";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { SearchPalette } from "@/components/ui/SearchPalette";
+import { LenisProvider } from "@/components/animations/LenisProvider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gravity-shop.com"),
   title: {
-    default: "Gravity Shop | Cinematic 3D E-commerce",
+    default: "Gravity Shop | Premium 3D Showroom",
     template: "%s | Gravity Shop"
   },
-  description: "Experience the future of luxury shopping. A billion-dollar tech ecosystem.",
+  description: "Experience modern engineering and luxury design. Built for high-fidelity product showrooms.",
   openGraph: {
-    title: "Gravity Shop | Cinematic 3D E-commerce",
-    description: "Experience the future of luxury shopping. A billion-dollar tech ecosystem.",
+    title: "Gravity Shop | Premium 3D Showroom",
+    description: "Experience modern engineering and luxury design. Built for high-fidelity product showrooms.",
     url: "https://gravity-shop.com",
     siteName: "Gravity Shop",
     images: [
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gravity Shop | Cinematic 3D E-commerce",
-    description: "Experience the future of luxury shopping. A billion-dollar tech ecosystem.",
+    title: "Gravity Shop | Premium 3D Showroom",
+    description: "Experience modern engineering and luxury design. Built for high-fidelity product showrooms.",
     images: ["https://res.cloudinary.com/gravity-shop-mock/image/upload/v1/og-image.png"],
   },
 };
@@ -46,13 +46,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
-      <body className="bg-space-900 text-white antialiased selection:bg-neon-purple/30 selection:text-neon-cyan">
-        <MagneticCursor />
-        <CartDrawer />
-        <AuthModal />
-        <SearchPalette />
-        {children}
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className="bg-[#08080a] text-[#e2e8f0] antialiased selection:bg-[#bbf3ff]/30 selection:text-[#bbf3ff]">
+        <LenisProvider>
+          <CartDrawer />
+          <AuthModal />
+          <SearchPalette />
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );

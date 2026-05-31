@@ -4,8 +4,12 @@
 
 @layer base {
   :root {
-    --background: #030014;
-    --foreground: #ffffff;
+    --background: #08080a;
+    --foreground: #e2e8f0;
+    --surface: #0e0e12;
+    --border: rgba(255, 255, 255, 0.08);
+    --accent: #bbf3ff;
+    --warning: #ffa000;
   }
 
   body {
@@ -13,62 +17,59 @@
     background: var(--background);
     margin: 0;
     overflow-x: hidden;
-    font-family: var(--font-inter), sans-serif;
-    cursor: none;
+    font-family: var(--font-sans), sans-serif;
+    cursor: auto;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-outfit), sans-serif;
+    font-family: var(--font-sans), sans-serif;
   }
 }
 
 @layer utilities {
+  .border-hairline {
+    border-color: var(--border);
+  }
+
   .text-gradient {
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(to right, #00f0ff, #9d00ff, #ff003c);
+    color: var(--foreground);
+    background: none;
+    -webkit-text-fill-color: initial;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
   }
 
   .glass-panel {
-    background: rgba(10, 10, 31, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    background: rgba(14, 14, 18, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   }
   
   .neon-border {
     position: relative;
+    border: 1px solid var(--border);
   }
   
   .neon-border::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(45deg, #00f0ff, #9d00ff, transparent 60%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+    display: none;
   }
 }
 
 /* Custom Scrollbar for a premium feel */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #030014; 
+  background: #08080a; 
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a4a; 
-  border-radius: 4px;
+  background: #2a2a35; 
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9d00ff; 
+  background: #444455; 
 }
 
 /* Hide scrollbar for elements with .no-scrollbar class */

@@ -1,70 +1,69 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Product } from "./ProductCard3D";
 import { ProductGrid } from "./ProductGrid";
-import { CategoryFilter } from "./CategoryFilter";
-import { FloatingGradientBackground } from "@/components/ui/FloatingGradientBackground";
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  image: string;
+  description: string;
+  tags: string[];
+}
 
 export function ProductShowcase() {
-  const [activeCategory, setActiveCategory] = useState("All");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/products${activeCategory !== "All" ? `?category=${activeCategory}` : ""}`);
-        const data = await res.json();
-        
-        const formattedData = data.map((p: { _id: string, [key: string]: unknown }) => ({
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        const formatted = data.map((p: { _id: string; [key: string]: unknown }) => ({
           ...p,
           id: p._id.toString(),
         }));
-        
-        setProducts(formattedData);
-      } catch (err) {
-        console.error("Failed to fetch products", err);
-      } finally {
+        setProducts(formatted);
         setLoading(false);
-      }
-    };
+      })
+      .catch((err) => {
+        console.error("Failed to fetch products", err);
+        setLoading(false);
+      });
+  }, []);
 
-    fetchProducts();
-  }, [activeCategory]);
+  if (loading) {
+    return (
+      <div className="py-32 flex justify-center items-center bg-[#08080a]">
+        <span className="font-mono text-xs text-[#bbf3ff] animate-pulse tracking-[0.2em]">INITIALIZING SHOWROOM GRID...</span>
+      </div>
+    );
+  }
 
   return (
-    <section className="relative min-h-screen py-32 z-10 overflow-hidden border-t border-white/5">
-      <FloatingGradientBackground />
-      
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1 }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display font-bold text-4xl md:text-6xl text-white mb-6">
-            Curated From <br />
-            <span className="text-gradient">The Future.</span>
-          </h2>
-          <p className="text-gray-400 max-w-xl mx-auto font-light text-lg">
-            Equip yourself with next-generation technology and fashion, built for the trailblazers of tomorrow.
-          </p>
-        </motion.div>
-
-        <CategoryFilter activeCategory={activeCategory} onSelect={setActiveCategory} />
+    <section id="showroom-registry" className="bg-[#08080a] text-white border-t border-white/5 py-32">
+      <div className="container mx-auto px-6 md:px-12 max-w-7xl">
         
-        {loading ? (
-          <div className="flex justify-center items-center h-64 w-full">
-            <div className="w-8 h-8 rounded-full border-2 border-neon-cyan border-t-transparent animate-spin" />
+        {/* Technical Header */}
+        <div className="flex flex-col md:flex-row justify-between items-baseline mb-16 gap-4">
+          <div className="space-y-2">
+            <span className="font-mono text-[11px] text-[#bbf3ff] tracking-widest uppercase block">
+              REGISTRY // VERIFIED_HARDWARE_CATALOG
+            </span>
+            <h2 className="font-sans font-black text-[32px] uppercase tracking-tighter leading-none text-white">
+              THE COLLECTION
+            </h2>
           </div>
-        ) : (
-          <ProductGrid products={products} />
-        )}
+          <div className="font-mono text-[11px] text-gray-500 tracking-wider">
+            {`SYS_REGISTRY // ASSETS: ${products.length} ACTIVE`}
+          </div>
+        </div>
+
+        {/* Dynamic Grid */}
+        <ProductGrid products={products} />
+
       </div>
     </section>
   );

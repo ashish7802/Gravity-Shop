@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, PresentationControls, ContactShadows, Float, useGLTF } from "@react-three/drei";
+import { Environment, PresentationControls, ContactShadows, useGLTF } from "@react-three/drei";
 
 function ModelRenderer({ url }: { url: string }) {
   const { scene } = useGLTF(url);
@@ -19,49 +19,49 @@ export default function ProductCanvas({ product }: { product: any }) {
 
   return (
     <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-      <ambientLight intensity={0.5} />
-      <spotLight position={[5, 5, 5]} angle={0.15} penumbra={1} intensity={2} color="#00f0ff" />
-      <spotLight position={[-5, -5, -5]} angle={0.15} penumbra={1} intensity={2} color="#ff00aa" />
+      <ambientLight intensity={0.4} />
+      {/* Sleek white and ice-blue technical lighting spotlights */}
+      <spotLight position={[5, 5, 5]} angle={0.15} penumbra={1} intensity={1.5} color="#ffffff" />
+      <spotLight position={[-5, -5, -5]} angle={0.15} penumbra={1} intensity={1.5} color="#bbf3ff" />
       
       <PresentationControls
         global
         snap={true}
         rotation={[0, 0.3, 0]}
-        polar={[-Math.PI / 3, Math.PI / 3]}
-        azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+        polar={[-Math.PI / 4, Math.PI / 4]}
+        azimuth={[-Math.PI / 2, Math.PI / 2]}
       >
-        <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-          {product.modelPath ? (
-            <Suspense fallback={
-              <mesh>
-                <boxGeometry args={[1, 1, 1]} />
-                <meshStandardMaterial wireframe color="#00f0ff" />
-              </mesh>
-            }>
-              <ModelRenderer url={product.modelPath} />
-            </Suspense>
-          ) : (
+        {product.modelPath ? (
+          <Suspense fallback={
             <mesh>
-              {product.category === "Sneakers" && <boxGeometry args={[1, 1, 1]} />}
-              {product.category === "Watches" && <torusGeometry args={[0.7, 0.2, 16, 100]} />}
-              {product.category === "Gaming" && <octahedronGeometry args={[1]} />}
-              {product.category === "Electronics" && <sphereGeometry args={[1, 32, 32]} />}
-              {product.category === "Fashion" && <cylinderGeometry args={[0.5, 0.5, 2, 32]} />}
-              {product.category === "Accessories" && <coneGeometry args={[1, 2, 32]} />}
-              <meshPhysicalMaterial 
-                color="#ffffff" 
-                metalness={1} 
-                roughness={0.1} 
-                clearcoat={1} 
-                emissive="#00f0ff"
-                emissiveIntensity={0.2}
-              />
+              <boxGeometry args={[1, 1, 1]} />
+              <meshStandardMaterial wireframe color="#bbf3ff" />
             </mesh>
-          )}
-        </Float>
+          }>
+            <ModelRenderer url={product.modelPath} />
+          </Suspense>
+        ) : (
+          <mesh>
+            {product.category === "Sneakers" && <boxGeometry args={[1, 1, 1]} />}
+            {product.category === "Eyewear" && <cylinderGeometry args={[0.8, 0.8, 0.2, 32]} />}
+            {product.category === "Hardware" && <octahedronGeometry args={[1]} />}
+            {product.category === "Electronics" && <sphereGeometry args={[1, 32, 32]} />}
+            {product.category === "Audio" && <torusGeometry args={[0.8, 0.25, 16, 100]} />}
+            {product.category === "Wearables" && <torusGeometry args={[0.7, 0.2, 16, 100]} />}
+            {product.category === "Peripherals" && <boxGeometry args={[1.5, 0.2, 0.8]} />}
+            <meshPhysicalMaterial 
+              color="#15151c" 
+              metalness={0.9} 
+              roughness={0.15} 
+              clearcoat={1} 
+              emissive="#bbf3ff"
+              emissiveIntensity={0.2}
+            />
+          </mesh>
+        )}
       </PresentationControls>
       
-      <ContactShadows position={[0, -1.5, 0]} opacity={0.4} scale={10} blur={2} far={4} />
+      <ContactShadows position={[0, -1.5, 0]} opacity={0.6} scale={10} blur={2.5} far={4} color="#08080a" />
       <Environment preset="city" />
     </Canvas>
   );
