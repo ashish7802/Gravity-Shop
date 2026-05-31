@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "@/store/useAppStore";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 interface CartFlyAnimationProps {
   id: string;
@@ -42,7 +42,7 @@ export function CartFlyAnimation({ id, image, startPos, onComplete }: CartFlyAni
         className="fixed z-[1000] pointer-events-none w-32 h-32 flex items-center justify-center drop-shadow-[0_0_30px_rgba(0,240,255,0.8)]"
         style={{ left: -64, top: -64 }} // Center the image based on startPos
       >
-        <Image src={image} alt="Adding to cart" fill className="object-contain" />
+        <SafeImage src={image} alt="Adding to cart" fill className="object-contain" />
         
         {/* Particle trail */}
         <motion.div

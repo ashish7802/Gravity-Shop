@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useAppStore } from "@/store/useAppStore";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import dynamic from "next/dynamic";
 
 const ProductCanvas = dynamic(() => import("./ProductCanvas"), { 
@@ -115,7 +115,7 @@ export function ProductDetails({ product, related }: { product: any, related?: a
                 className="group relative block aspect-[4/5] bg-white/5 rounded-2xl border border-white/10 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
-                <Image src={rel.image} alt={rel.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" sizes="(max-width: 768px) 100vw, 25vw" />
+                <SafeImage src={rel.image} alt={rel.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out" sizes="(max-width: 768px) 100vw, 25vw" />
                 
                 <div className="absolute bottom-0 left-0 w-full p-6 z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   <p className="text-neon-cyan font-mono text-xs mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">{rel.category}</p>

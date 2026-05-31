@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import connectDB from "@/lib/db/connect";
 import { Order } from "@/lib/models/Order";
 import { Package, Clock, CheckCircle, XCircle } from "lucide-react";
-import Image from "next/image";
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "gravity_super_secret_key";
 
@@ -77,7 +77,8 @@ export default async function AccountPage() {
                   {order.items.map((item: any) => (
                     <div key={item.productId.toString()} className="flex items-center gap-4 bg-white/5 p-3 rounded-lg">
                       <div className="w-12 h-12 relative bg-black rounded border border-white/10 overflow-hidden">
-                        <Image src={item.image} alt={item.name} fill className="object-cover opacity-80" sizes="48px" />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover opacity-80" />
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-bold text-white">{item.name}</p>

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Plus, Minus, Trash2 } from "lucide-react";
 import { CartItem, useAppStore } from "@/store/useAppStore";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 interface CartItemCardProps {
   item: CartItem;
@@ -31,7 +31,7 @@ export function CartItemCard({ item, index }: CartItemCardProps) {
 
       <div className="flex gap-4 relative z-10">
         <div className="w-16 h-16 rounded-lg bg-space-900/50 flex items-center justify-center relative overflow-hidden border border-white/5">
-          <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
+          <SafeImage src={item.image} alt={item.name} fill className="object-contain p-2" />
         </div>
         
         <div className="flex-1 flex flex-col justify-between">

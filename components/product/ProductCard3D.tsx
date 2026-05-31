@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { Star, ShoppingCart } from "lucide-react";
 import React, { useState } from "react";
 import { useAppStore } from "@/store/useAppStore";
@@ -107,7 +107,7 @@ export function ProductCard3D({ product, index }: ProductCard3DProps) {
             style={{ transform: "translateZ(50px)" }}
           >
             <div className="absolute inset-0 bg-neon-cyan/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <Image
+            <SafeImage
               src={product.image}
               alt={product.name}
               fill

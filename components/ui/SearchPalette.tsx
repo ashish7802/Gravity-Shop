@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 export function SearchPalette() {
   const [isOpen, setIsOpen] = useState(false);
@@ -129,7 +129,7 @@ export function SearchPalette() {
                         className="w-full flex items-center p-3 hover:bg-white/5 rounded-xl transition-colors group text-left"
                       >
                         <div className="w-12 h-12 relative bg-black rounded border border-white/10 overflow-hidden mr-4">
-                          <Image src={item.image} alt={item.name} fill className="object-cover opacity-80 group-hover:opacity-100" sizes="48px" />
+                          <SafeImage src={item.image} alt={item.name} fill className="object-cover opacity-80 group-hover:opacity-100" sizes="48px" />
                         </div>
                         <div className="flex-1">
                           <p className="text-white font-bold text-sm group-hover:text-neon-cyan transition-colors">{item.name}</p>

@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 import { validateEnv } from "@/lib/env";
-import dns from "dns";
 
-// Fix for Windows Node.js internal DNS resolution failing on Atlas SRV records
-dns.setServers(["8.8.8.8"]);
 
 validateEnv();
 
