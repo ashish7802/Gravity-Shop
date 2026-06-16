@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ProductPreviewScene } from "./ProductPreviewScene";
+import dynamic from "next/dynamic";
+const ProductPreviewScene = dynamic(
+  () => import("./ProductPreviewScene").then((mod) => mod.ProductPreviewScene),
+  { ssr: false }
+);
 import { ProductDetailsPanel } from "./ProductDetailsPanel";
 import { useAppStore } from "@/store/useAppStore";
 

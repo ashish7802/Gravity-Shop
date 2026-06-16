@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+export const dynamic = "force-dynamic";
 import connectDB from "@/lib/db/connect";
 import { Product } from "@/lib/models/Product";
 
