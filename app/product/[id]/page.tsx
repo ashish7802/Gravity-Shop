@@ -1,7 +1,5 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import connectDB from "@/lib/db/connect";
-import { Product } from "@/lib/models/Product";
 import { Navbar } from "@/components/ui/Navbar";
 import { ProductDetails } from "@/components/product/ProductDetails";
 
