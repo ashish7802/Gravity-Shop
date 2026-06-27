@@ -1,21 +1,13 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { getStripe } from "@/lib/stripe";
 import connectDB from "@/lib/db/connect";
 import { Order } from "@/lib/models/Order";
 import { Product } from "@/lib/models/Product";
 import { logger } from "@/lib/logger";
 
 export async function POST(req: Request) {
-  const getStripeKey = () => {
-    if (process.env.STRIPE_SECRET_KEY) return process.env.STRIPE_SECRET_KEY;
-    if (process.env.NODE_ENV !== "production") return "dev_dummy_key";
-    throw new Error("FATAL: STRIPE_SECRET_KEY is missing in production environment.");
-  };
-
-  const stripe = new Stripe(getStripeKey(), {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    apiVersion: "2026-05-27.dahlia" as any,
-  });
+  const stripe = getStripe();
 
   // Note: We intentionally do NOT use withErrorHandler here because Stripe requires 
   // raw body processing and extremely specific signature validation errors.
