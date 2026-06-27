@@ -45,36 +45,36 @@ export function Navbar() {
   ];
 
   return (
-    <motion.nav
-      initial={{ y: -10, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 h-[72px] flex items-center justify-between border-b transition-colors duration-350 ${
-        scrolled 
-          ? "bg-[#08080a]/90 backdrop-blur-xl border-white/5" 
-          : "bg-transparent border-white/5"
-      }`}
-    >
-      <div className="container mx-auto px-6 md:px-12 max-w-7xl flex items-center justify-between h-full">
+    <div className={`fixed left-0 right-0 z-50 transition-all duration-500 flex justify-center ${scrolled ? 'top-6 px-6' : 'top-0 px-0'}`}>
+      <motion.nav
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className={`w-full max-w-7xl h-[72px] flex items-center justify-between transition-all duration-500 ${
+          scrolled 
+            ? "bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.4)] px-8" 
+            : "bg-transparent border-b border-white/5 px-6 md:px-12"
+        }`}
+      >
         {/* Brand Link & Smooth Scroll Button */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           <Link 
             href="/" 
-            className="font-sans font-black text-sm tracking-[0.15em] text-white hover:opacity-80 transition-opacity"
+            className="font-sans font-bold text-lg tracking-[0.2em] text-white hover:opacity-80 transition-opacity"
           >
             GRAVITY
           </Link>
           
           <button
             onClick={handleScrollToGrid}
-            className="font-mono text-[9px] tracking-widest text-[#bbf3ff] border border-[#bbf3ff]/20 px-2.5 py-1 bg-[#bbf3ff]/5 hover:bg-white hover:text-black hover:border-white transition-all duration-300 rounded-none cursor-pointer"
+            className="font-mono text-[10px] tracking-[0.2em] text-[#bbf3ff] border border-[#bbf3ff]/20 px-3 py-1.5 bg-[#bbf3ff]/5 hover:bg-white hover:text-black hover:border-white transition-all duration-300 rounded-sm cursor-pointer shadow-[0_0_10px_rgba(187,243,255,0.05)] hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
           >
             [ NEW ARRIVALS ]
           </button>
         </div>
 
         {/* Sliding Technical Nav Links */}
-        <div className="hidden md:flex items-center gap-8 h-full font-sans text-[12px] font-semibold tracking-wider">
+        <div className="hidden md:flex items-center gap-10 h-full font-sans text-[13px] font-medium tracking-[0.15em]">
           {navItems.map((item) => {
             const isActive = activeTab === item.name;
             return (
@@ -98,7 +98,7 @@ export function Navbar() {
         </div>
 
         {/* Technical Actions */}
-        <div className="flex items-center gap-6 font-sans text-[12px] font-semibold tracking-wider text-gray-300">
+        <div className="flex items-center gap-6 font-sans text-[13px] font-medium tracking-[0.1em] text-gray-300">
           {/* Admin Command Indicator */}
           {isAuthenticated && user?.role === "admin" && (
             <Link 
@@ -125,7 +125,7 @@ export function Navbar() {
             {`[ CART: ${String(totalItems).padStart(2, "0")} ]`}
           </button>
         </div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+    </div>
   );
 }

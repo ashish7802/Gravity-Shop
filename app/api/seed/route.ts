@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import connectDB from "@/lib/db/connect";
+import { Product } from "@/lib/models/Product";
 
-const MOCK_PRODUCTS = [
+const mockProducts = [
   {
-    _id: "64a1b2c3d4e5f60000000001",
     name: "Acoustic Prime Headset",
     category: "Audio",
     price: 299,
@@ -12,7 +13,6 @@ const MOCK_PRODUCTS = [
     stock: 50,
   },
   {
-    _id: "64a1b2c3d4e5f60000000002",
     name: "Nebula Mechanical Keyboard",
     category: "Accessories",
     price: 189,
@@ -22,7 +22,6 @@ const MOCK_PRODUCTS = [
     stock: 120,
   },
   {
-    _id: "64a1b2c3d4e5f60000000003",
     name: "Quantum 4K Monitor",
     category: "Displays",
     price: 899,
@@ -32,7 +31,6 @@ const MOCK_PRODUCTS = [
     stock: 25,
   },
   {
-    _id: "64a1b2c3d4e5f60000000004",
     name: "Zenith Studio Microphone",
     category: "Audio",
     price: 149,
@@ -42,7 +40,6 @@ const MOCK_PRODUCTS = [
     stock: 80,
   },
   {
-    _id: "64a1b2c3d4e5f60000000005",
     name: "Ergo Pro Mouse",
     category: "Accessories",
     price: 99,
@@ -52,7 +49,6 @@ const MOCK_PRODUCTS = [
     stock: 200,
   },
   {
-    _id: "64a1b2c3d4e5f60000000006",
     name: "Lumina Desk Lamp",
     category: "Accessories",
     price: 79,
@@ -63,15 +59,22 @@ const MOCK_PRODUCTS = [
   }
 ];
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const category = searchParams.get("category");
-
-  let products = [...MOCK_PRODUCTS];
-
-  if (category) {
-    products = products.filter(p => p.category === category);
+export async function GET() {
+  try {
+    await connectDB();
+    
+    // Clear existing data
+    await Product.deleteMany({});
+    
+    // Insert mock products
+    const inserted = await Product.insertMany(mockProducts);
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: "Database seeded successfully!",
+      products: inserted.length
+    });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
-
-  return NextResponse.json(products);
 }

@@ -36,15 +36,13 @@ export function Hero() {
   };
 
   return (
-    <section className="relative h-[60vh] lg:h-[65vh] min-h-[500px] w-full flex items-center bg-[#08080a] overflow-hidden border-b border-white/5 pt-16">
-      {/* Subtle background hardware mesh grid overlay */}
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-[0.08]"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=1920&q=80')`,
-        }}
-      />
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_40%,#08080a_90%)]" />
+    <section className="relative h-[80vh] min-h-[600px] w-full flex items-center bg-[#08080a] overflow-hidden border-b border-white/5 pt-16">
+      {/* Animated Glowing Orbs for Glassmorphism Background */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-neon-cyan/20 blur-[120px] rounded-full animate-float mix-blend-screen" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-neon-purple/20 blur-[150px] rounded-full animate-pulse-slow mix-blend-screen" />
+      <div className="absolute top-[20%] right-[20%] w-[30%] h-[30%] bg-neon-magenta/10 blur-[100px] rounded-full animate-float mix-blend-screen" style={{ animationDelay: '2s' }} />
+
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_0%,#08080a_100%)]" />
 
       <motion.div 
         variants={containerVariants}
@@ -53,7 +51,7 @@ export function Hero() {
         className="container mx-auto px-6 md:px-12 max-w-7xl z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
       >
         {/* Left Content Side */}
-        <div className="lg:col-span-8 flex flex-col justify-center text-left space-y-6">
+        <div className="lg:col-span-6 flex flex-col justify-center text-left space-y-6">
           {/* Small Label */}
           <motion.div
             variants={elementVariants}
@@ -65,7 +63,7 @@ export function Hero() {
           {/* Large Heading */}
           <motion.h1
             variants={elementVariants}
-            className="font-sans font-black text-4xl md:text-5xl lg:text-6xl tracking-[-0.06em] leading-[0.9] text-white select-none uppercase"
+            className="font-sans font-black text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] leading-[1.05] text-white select-none capitalize"
           >
             Engineered Products.<br />
             Built For The Future.
@@ -82,46 +80,46 @@ export function Hero() {
           {/* Clean Boxy Buttons */}
           <motion.div
             variants={elementVariants}
-            className="flex flex-wrap gap-4 font-mono text-[9px] tracking-widest pt-2"
+            className="flex flex-wrap gap-4 font-mono text-[10px] tracking-widest pt-4"
           >
             <button 
               onClick={handleScrollToGrid}
-              className="border border-white/20 hover:border-white hover:bg-white hover:text-black px-6 py-3.5 transition-colors duration-300 rounded-none bg-transparent text-white uppercase cursor-pointer"
+              className="border border-neon-cyan/50 hover:border-neon-cyan hover:bg-neon-cyan hover:text-black px-8 py-4 transition-all duration-300 rounded-full bg-neon-cyan/10 backdrop-blur-md text-neon-cyan hover:shadow-[0_0_30px_rgba(0,240,255,0.6)] uppercase cursor-pointer shadow-[0_0_15px_rgba(0,240,255,0.2)]"
             >
               [ Explore Products ]
             </button>
             
             <button 
-              className="border border-white/20 hover:border-white hover:bg-white hover:text-black px-6 py-3.5 transition-colors duration-300 rounded-none bg-transparent text-white uppercase cursor-pointer"
+              onClick={() => {
+                const el = document.getElementById("showroom-registry");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="border border-white/20 hover:border-white hover:bg-white hover:text-black px-8 py-4 transition-all duration-300 rounded-full bg-white/5 backdrop-blur-md text-white uppercase cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,255,255,0.3)]"
             >
               [ View Collection ]
             </button>
           </motion.div>
         </div>
 
-        {/* Right Side Telemetry (40% reduced in size) */}
+        {/* Right Side Featured Image */}
         <motion.div
           variants={elementVariants}
-          className="lg:col-span-4 bg-[#0e0e12]/60 backdrop-blur-md border border-white/5 p-5 font-mono text-[9px] tracking-wider text-gray-500 max-w-[240px] lg:max-w-[260px] ml-auto w-full space-y-2 hover:border-white/20 transition-all duration-300"
+          className="lg:col-span-6 relative h-[400px] md:h-[500px] w-full hidden lg:block"
         >
-          <div className="flex justify-between items-center py-0.5">
-            <span>STATUS</span>
-            <span className="text-[#bbf3ff]">ONLINE</span>
-          </div>
-          <div className="flex justify-between items-center py-0.5">
-            <span>PRODUCTS</span>
-            <span className="text-white">128</span>
-          </div>
-          <div className="flex justify-between items-center py-0.5">
-            <span>LATENCY</span>
-            <span className="text-emerald-400">12MS</span>
-          </div>
-          <div className="flex justify-between items-center py-0.5">
-            <span>REGIONS</span>
-            <span className="text-white">42</span>
-          </div>
-          <div className="pt-2.5 border-t border-white/5 text-[8px] text-gray-600 text-center uppercase tracking-widest">
-            GRAVITY // READOUT
+          <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10">
+            <div 
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
+              style={{
+                backgroundImage: `url('https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=1200&q=80')`,
+              }}
+            />
+            {/* Dark gradient overlay for text legibility if needed, or just to blend it into the dark theme */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-80" />
+            
+            {/* Small Floating Tag */}
+            <div className="absolute bottom-6 left-6 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full font-sans text-xs font-medium text-white shadow-lg">
+              Featured: Acoustic Prime
+            </div>
           </div>
         </motion.div>
 

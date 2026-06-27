@@ -13,32 +13,33 @@ function TechShowcase() {
     <section id="tech-showcase-section" className="py-32 border-t border-white/5 bg-[#0e0e12] relative z-10">
       <div className="container mx-auto px-6 md:px-12 max-w-7xl">
         {/* Section Heading */}
-        <div className="mb-20 space-y-2">
-          <span className="font-mono text-[11px] text-[#bbf3ff] tracking-[0.25em] uppercase block">
+        <div className="mb-20 space-y-4">
+          <span className="font-mono text-[12px] text-[#bbf3ff] tracking-[0.3em] uppercase block">
             SPECIFICATION_INDEX // CORE_SCIENCES
           </span>
-          <h2 className="font-sans font-black text-[32px] uppercase tracking-tighter leading-none text-white">
+          <h2 className="font-sans font-bold text-[36px] md:text-[42px] uppercase tracking-[-0.02em] leading-tight text-white">
             ADVANCED ENGINEERING
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-4"
+            className="group relative overflow-hidden rounded-2xl aspect-square"
           >
-            <span className="font-mono text-[11px] text-[#bbf3ff] tracking-widest uppercase block">
-              TECH_SPEC // MATERIAL
-            </span>
-            <h3 className="font-sans font-bold text-[20px] text-white uppercase">
-              Aerospace Titanium
-            </h3>
-            <p className="text-[14px] text-gray-400 font-sans font-light leading-relaxed">
-              Milled to absolute tolerances. Our structural components utilize Grade 5 Titanium alloy, ensuring structural purity with zero weight compromise under mechanical stress.
-            </p>
+            <div 
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+              style={{ backgroundImage: `url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80')` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-8 space-y-3">
+              <span className="font-mono text-[10px] text-neon-cyan tracking-widest uppercase">TECH_SPEC // MATERIAL</span>
+              <h3 className="font-sans font-bold text-[22px] text-white uppercase">Aerospace Titanium</h3>
+              <p className="text-[13px] text-gray-300 font-sans leading-relaxed">Milled to absolute tolerances. Grade 5 Titanium alloy ensures structural purity with zero weight compromise.</p>
+            </div>
           </motion.div>
 
           <motion.div
@@ -46,17 +47,18 @@ function TechShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-4"
+            className="group relative overflow-hidden rounded-2xl aspect-square"
           >
-            <span className="font-mono text-[11px] text-[#bbf3ff] tracking-widest uppercase block">
-              TECH_SPEC // OPTICS
-            </span>
-            <h3 className="font-sans font-bold text-[20px] text-white uppercase">
-              Polarized HUD Matrix
-            </h3>
-            <p className="text-[14px] text-gray-400 font-sans font-light leading-relaxed">
-              Micro-projections sealed behind sapphire crystal panels. Real-time telemetry overlaid directly in your field of view with zero eye fatigue or refresh rate limits.
-            </p>
+            <div 
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+              style={{ backgroundImage: `url('https://images.unsplash.com/photo-1550009158-9effb6628347?auto=format&fit=crop&w=800&q=80')` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-8 space-y-3">
+              <span className="font-mono text-[10px] text-neon-purple tracking-widest uppercase">TECH_SPEC // OPTICS</span>
+              <h3 className="font-sans font-bold text-[22px] text-white uppercase">Polarized HUD Matrix</h3>
+              <p className="text-[13px] text-gray-300 font-sans leading-relaxed">Micro-projections sealed behind sapphire crystal panels. Real-time telemetry overlaid with zero eye fatigue.</p>
+            </div>
           </motion.div>
 
           <motion.div
@@ -64,17 +66,18 @@ function TechShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-4"
+            className="group relative overflow-hidden rounded-2xl aspect-square"
           >
-            <span className="font-mono text-[11px] text-[#bbf3ff] tracking-widest uppercase block">
-              TECH_SPEC // INTERACTIVE
-            </span>
-            <h3 className="font-sans font-bold text-[20px] text-white uppercase">
-              Neural Coupling
-            </h3>
-            <p className="text-[14px] text-gray-400 font-sans font-light leading-relaxed">
-              Hologram and audio drivers communicate through modern high-fidelity receivers, bypassing latency loops for immediate response coordinates tracking.
-            </p>
+            <div 
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+              style={{ backgroundImage: `url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80')` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-8 space-y-3">
+              <span className="font-mono text-[10px] text-neon-magenta tracking-widest uppercase">TECH_SPEC // INTERACTIVE</span>
+              <h3 className="font-sans font-bold text-[22px] text-white uppercase">Neural Coupling</h3>
+              <p className="text-[13px] text-gray-300 font-sans leading-relaxed">Hologram and audio drivers communicate through modern high-fidelity receivers, bypassing latency loops.</p>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -85,19 +88,24 @@ function TechShowcase() {
 // Inline Mission Statement Section
 function MissionStatement() {
   return (
-    <section className="py-36 border-t border-white/5 bg-[#08080a] flex items-center justify-center text-center relative z-10">
-      <div className="container mx-auto px-6 md:px-12 max-w-4xl">
+    <section className="py-48 bg-[#08080a] flex items-center justify-center text-center relative z-10 overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-30"
+        style={{ backgroundImage: `url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80')` }}
+      />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <div className="container mx-auto px-6 md:px-12 max-w-4xl relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-6"
+          className="space-y-8"
         >
-          <span className="font-mono text-[11px] text-[#bbf3ff] tracking-[0.25em] uppercase block">
+          <span className="font-mono text-[12px] text-[#bbf3ff] tracking-[0.3em] uppercase block drop-shadow-md">
             OUR_MISSION // ARCHITECTURE
           </span>
-          <p className="font-sans font-black text-[32px] text-white tracking-tight uppercase leading-snug">
+          <p className="font-sans font-bold text-[36px] md:text-[42px] text-white tracking-[-0.02em] uppercase leading-[1.2] drop-shadow-2xl">
             WE BELIEVE IN ENGINEERING THE NEXT DECADE. TECHNICAL PRECISION, RESTRAINED LUXURY, UNCOMPROMISING FIDELITY.
           </p>
         </motion.div>

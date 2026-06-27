@@ -114,7 +114,7 @@ export function ProductDetails({ product, related }: { product: Product, related
                 disabled={product.stock === 0}
                 onMouseEnter={() => setHoveringInteractive(true)}
                 onMouseLeave={() => setHoveringInteractive(false)}
-                className="w-full border border-white/20 hover:border-white hover:bg-white hover:text-black font-mono tracking-widest text-[10px] py-5 transition-all duration-300 rounded-sm disabled:opacity-30 disabled:cursor-not-allowed uppercase"
+                className="w-full border border-neon-cyan/50 hover:border-neon-cyan hover:bg-neon-cyan hover:text-black font-mono tracking-widest text-[10px] py-5 transition-all duration-300 rounded-full disabled:opacity-30 disabled:cursor-not-allowed uppercase shadow-[0_0_15px_rgba(0,240,255,0.15)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)]"
               >
                 {product.stock > 0 ? "INITIATE_ACQUISITION_PROTOCOL" : "ACQUISITION // UNAVAILABLE"}
               </button>

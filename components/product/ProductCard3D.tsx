@@ -45,11 +45,20 @@ export function ProductCard3D({ product }: ProductCard3DProps) {
       <motion.div
         variants={cardVariants}
         whileHover="hover"
-        className="group relative h-full flex flex-col bg-[#0e0e12] border border-white/5 hover:border-white/20 transition-colors duration-500 overflow-hidden"
+        className="group relative h-full flex flex-col bg-white/[0.02] backdrop-blur-md border border-white/5 hover:border-white/20 transition-all duration-500 overflow-hidden rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
       >
+        {/* Dynamic Gradient Glow on Hover */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-purple/10 pointer-events-none z-10 mix-blend-screen opacity-0"
+          variants={{
+            hover: { opacity: 1 }
+          }}
+          transition={{ duration: 0.5 }}
+        />
+
         {/* Specular Light Sweep overlay */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none z-10"
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none z-10"
           initial={{ x: "-100%" }}
           variants={{
             hover: { x: "100%" }
@@ -58,7 +67,7 @@ export function ProductCard3D({ product }: ProductCard3DProps) {
         />
 
         {/* Product Image Stage */}
-        <div className="relative h-64 w-full flex items-center justify-center p-8 bg-black/10">
+        <div className="relative h-64 w-full flex items-center justify-center p-8 bg-black/20">
           <motion.div
             className="relative w-full h-full"
             variants={{
@@ -79,17 +88,17 @@ export function ProductCard3D({ product }: ProductCard3DProps) {
 
         {/* Product Details Section */}
         <div className="flex flex-col flex-1 p-6 border-t border-white/5 relative z-20">
-          <div className="flex justify-between items-baseline mb-2">
-            <span className="font-mono text-[9px] text-gray-500 uppercase tracking-[0.25em]">
+          <div className="flex justify-between items-baseline mb-4">
+            <span className="font-mono text-[10px] text-gray-500 uppercase tracking-[0.3em]">
               {product.category}
             </span>
-            <span className="font-mono text-xs text-[#bbf3ff] font-bold">
+            <span className="font-mono text-[13px] text-[#bbf3ff] font-bold tracking-widest">
               {formattedPrice}
             </span>
           </div>
 
           <motion.h3 
-            className="font-sans font-bold text-[18px] text-[#e2e8f0] group-hover:text-white transition-colors uppercase leading-snug"
+            className="font-sans font-bold text-[22px] tracking-[-0.01em] text-[#e2e8f0] group-hover:text-white transition-colors uppercase leading-[1.1]"
             variants={{
               initial: { y: 0 },
               hover: { y: -2 }

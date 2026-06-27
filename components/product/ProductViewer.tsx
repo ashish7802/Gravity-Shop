@@ -37,11 +37,32 @@ export function ProductViewer() {
         
         // Find Acoustic Prime Headset as our primary 3D showcase product
         const headset = formatted.find((p: Product) => p.name.includes("Acoustic Prime"));
-        setFeaturedProduct(headset || formatted[0] || null);
+        const fallbackProduct: Product = {
+          id: "fallback-product",
+          name: "Acoustic Prime Headset",
+          category: "Audio",
+          price: 299,
+          image: "/headset.png",
+          description: "Premium wireless audio with 3D spatial sound technology.",
+          tags: ["wireless", "audio", "premium"],
+          stock: 10,
+        };
+        setFeaturedProduct(headset || formatted[0] || fallbackProduct);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Failed to load products for viewer", err);
+        const fallbackProduct: Product = {
+          id: "fallback-product",
+          name: "Acoustic Prime Headset",
+          category: "Audio",
+          price: 299,
+          image: "/headset.png",
+          description: "Premium wireless audio with 3D spatial sound technology.",
+          tags: ["wireless", "audio", "premium"],
+          stock: 10,
+        };
+        setFeaturedProduct(fallbackProduct);
         setLoading(false);
       });
   }, []);
