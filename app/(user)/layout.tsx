@@ -5,6 +5,8 @@ import { Navbar } from "@/components/ui/Navbar";
 
 const JWT_SECRET = process.env.JWT_SECRET || "gravity_super_secret_key";
 
+export const dynamic = "force-dynamic";
+
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value;

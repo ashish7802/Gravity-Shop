@@ -51,15 +51,30 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              try {
-                var _origFetch = window.fetch ? window.fetch.bind(window) : null;
-                Object.defineProperty(window, 'fetch', {
-                  configurable: true,
-                  enumerable: true,
-                  get: function() { return _origFetch; },
-                  set: function(fn) { _origFetch = fn; }
-                });
-              } catch (e) {}
+              (function() {
+                try {
+                  var _origFetch = window.fetch ? window.fetch.bind(window) : null;
+                  var _currentFetch = _origFetch;
+
+                  if (typeof Window !== 'undefined' && Window.prototype) {
+                    try {
+                      Object.defineProperty(Window.prototype, 'fetch', {
+                        configurable: true,
+                        enumerable: true,
+                        get: function() { return _currentFetch; },
+                        set: function(fn) { _currentFetch = fn; }
+                      });
+                    } catch (e) {}
+                  }
+
+                  Object.defineProperty(window, 'fetch', {
+                    configurable: true,
+                    enumerable: true,
+                    get: function() { return _currentFetch; },
+                    set: function(fn) { _currentFetch = fn; }
+                  });
+                } catch (e) {}
+              })();
             `,
           }}
         />

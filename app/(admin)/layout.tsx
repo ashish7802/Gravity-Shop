@@ -5,6 +5,8 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
 const JWT_SECRET = process.env.JWT_SECRET || "gravity_super_secret_key";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminLayout({
   children,
 }: {

@@ -7,6 +7,7 @@ import { Product } from "@/lib/models/Product";
 import mongoose from "mongoose";
 
 export const revalidate = 60; // ISR every 60 seconds
+export const dynamicParams = true;
 
 const MOCK_PRODUCTS = [
   {
