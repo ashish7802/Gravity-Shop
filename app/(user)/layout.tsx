@@ -10,17 +10,17 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
   const token = cookieStore.get("token")?.value;
 
   if (!token) {
-    redirect("/");
+    redirect("/login?redirect=/account");
   }
 
   try {
     jwt.verify(token, JWT_SECRET);
   } catch {
-    redirect("/");
+    redirect("/login?redirect=/account");
   }
 
   return (
-    <div className="min-h-screen bg-[#030014] text-white">
+    <div className="min-h-screen bg-[#08080a] text-white">
       <Navbar />
       <div className="pt-32 pb-24">
         {children}

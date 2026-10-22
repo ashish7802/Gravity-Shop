@@ -30,9 +30,16 @@ export function ProductViewer() {
     fetch("/api/products")
       .then((res) => res.json())
       .then((data) => {
-        const formatted = data.map((p: { _id: string; [key: string]: unknown }) => ({
-          ...p,
-          id: p._id.toString(),
+        const list = Array.isArray(data) ? (data as Record<string, unknown>[]) : [];
+        const formatted: Product[] = list.map((p) => ({
+          id: p._id ? String(p._id) : p.id ? String(p.id) : String(Math.random()),
+          name: typeof p.name === "string" ? p.name : "Hardware Asset",
+          category: typeof p.category === "string" ? p.category : "Hardware",
+          price: typeof p.price === "number" ? p.price : 99,
+          image: typeof p.image === "string" ? p.image : "/headset.png",
+          description: typeof p.description === "string" ? p.description : "",
+          tags: Array.isArray(p.tags) ? (p.tags as string[]) : [],
+          stock: typeof p.stock === "number" ? p.stock : 10,
         }));
         
         // Find Acoustic Prime Headset as our primary 3D showcase product

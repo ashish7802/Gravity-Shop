@@ -1,21 +1,28 @@
 "use client";
 
 import Image, { ImageProps } from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const FALLBACK_IMAGE = "/sneakers.png";
 
 /**
  * A drop-in replacement for next/image that gracefully handles
  * invalid or unreachable image URLs by falling back to a local asset.
- * Includes Apple-style blur-in, scale, and fade reveal transitions.
+ * Handles external URLs, data URIs, and local public assets.
  */
 export function SafeImage({ src, alt, ...props }: ImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
   const [hasErrored, setHasErrored] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  useEffect(() => {
+    setImgSrc(src);
+    setHasErrored(false);
+    setIsLoaded(false);
+  }, [src]);
+
   const isExternal = typeof imgSrc === "string" && imgSrc.startsWith("http");
+  const isDataUri = typeof imgSrc === "string" && imgSrc.startsWith("data:");
   const isCloudinary = typeof imgSrc === "string" && imgSrc.includes("res.cloudinary.com");
 
   const handleError = () => {
@@ -25,8 +32,8 @@ export function SafeImage({ src, alt, ...props }: ImageProps) {
     }
   };
 
-  // For external non-Cloudinary URLs, use a plain <img> to avoid next/image domain errors
-  if (isExternal && !isCloudinary) {
+  // For data URIs and external non-Cloudinary URLs, use plain <img> to prevent Next.js image domain errors
+  if (isDataUri || (isExternal && !isCloudinary)) {
     const { fill, width, height, ...restProps } = props as Record<string, unknown>;
     return (
       // eslint-disable-next-line @next/next/no-img-element

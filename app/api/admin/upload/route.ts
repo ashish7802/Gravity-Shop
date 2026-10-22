@@ -46,7 +46,7 @@ export const POST = withErrorHandler(async (req: Request) => {
 
   // Determine target folder and resource type
   const folder = type === "model" ? "gravity-shop/models" : "gravity-shop/images";
-  const uploadResult = await uploadBufferToCloudinary(buffer, folder, "auto");
+  const uploadResult = await uploadBufferToCloudinary(buffer, folder, "auto", mimeType);
 
   return NextResponse.json({
     url: uploadResult.secure_url,

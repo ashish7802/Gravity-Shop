@@ -10,14 +10,16 @@ import {
   Users, 
   BarChart3, 
   Settings, 
-  LogOut
+  LogOut,
+  ArrowUpRight,
+  Boxes
 } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 
 const navItems = [
   { name: "CONSOLE", href: "/admin", icon: LayoutDashboard },
   { name: "PRODUCTS", href: "/admin/products", icon: Package },
-  { name: "INVENTORY", href: "/admin/inventory", icon: Package },
+  { name: "INVENTORY", href: "/admin/inventory", icon: Boxes },
   { name: "ORDERS", href: "/admin/orders", icon: ShoppingCart },
   { name: "USERS", href: "/admin/users", icon: Users },
   { name: "ANALYTICS", href: "/admin/analytics", icon: BarChart3 },
@@ -28,11 +30,29 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const { logout, setHoveringInteractive } = useAppStore();
 
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // ignore
+    }
+    logout();
+    window.location.href = "/login";
+  };
+
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-[#0e0e12] border-r border-white/5 z-[100] flex flex-col pointer-events-auto">
       {/* Brand Header */}
-      <div className="p-6 border-b border-white/5 font-mono text-xs tracking-[0.25em] text-white">
-        GRAVITY // OS
+      <div className="p-6 border-b border-white/5 flex items-center justify-between font-mono text-xs tracking-[0.25em] text-white">
+        <span>GRAVITY // OS</span>
+        <Link 
+          href="/" 
+          className="text-gray-500 hover:text-[#bbf3ff] transition-colors flex items-center gap-1 text-[10px] tracking-normal"
+          title="Return to Showroom"
+        >
+          <span>STORE</span>
+          <ArrowUpRight className="w-3 h-3" />
+        </Link>
       </div>
 
       {/* Navigation */}
@@ -68,7 +88,7 @@ export function AdminSidebar() {
       {/* Footer / Logout */}
       <div className="p-4 border-t border-white/5 font-mono text-[11px]">
         <button 
-          onClick={logout}
+          onClick={handleLogout}
           onMouseEnter={() => setHoveringInteractive(true)}
           onMouseLeave={() => setHoveringInteractive(false)}
           className="flex items-center gap-3 px-4 py-3 w-full rounded-none text-gray-500 hover:text-[#ffa000] border border-transparent hover:border-white/5 hover:bg-white/5 transition-all duration-300"

@@ -80,7 +80,7 @@ export function ProductDataGrid() {
                 </div>
                 <div>
                   <p className="font-sans font-bold text-white text-xs uppercase tracking-tight">{product.name}</p>
-                  <p className="text-gray-500 text-[9px] mt-0.5">ID: {product._id.slice(-8).toUpperCase()}</p>
+                  <p className="text-gray-500 text-[9px] mt-0.5">ID: {product?._id ? product._id.slice(-8).toUpperCase() : "REGISTRY"}</p>
                 </div>
               </div>
               

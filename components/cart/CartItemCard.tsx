@@ -36,7 +36,7 @@ export function CartItemCard({ item, index }: CartItemCardProps) {
           <div>
             <p className="font-sans font-bold text-white text-xs uppercase tracking-tight">{item.name}</p>
             <p className="font-mono text-[9px] text-gray-500 uppercase tracking-widest mt-0.5">
-              ID // {item.id.slice(-8).toUpperCase()}
+              ID // {item?.id ? item.id.slice(-8).toUpperCase() : "MANIFEST"}
             </p>
           </div>
           

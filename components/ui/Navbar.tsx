@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAppStore } from "@/store/useAppStore";
+import { LogOut, User as UserIcon } from "lucide-react";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -13,10 +14,25 @@ export function Navbar() {
     cartItems, 
     toggleCart,
     isAuthenticated,
-    user
+    user,
+    setUser,
+    logout,
+    toggleAuthModal
   } = useAppStore();
 
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Restore authenticated session from httpOnly cookie on mount
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.authenticated && data.user) {
+          setUser(data.user);
+        }
+      })
+      .catch(() => {});
+  }, [setUser]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,11 +53,19 @@ export function Navbar() {
     window.dispatchEvent(new CustomEvent("toggle-search"));
   };
 
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // ignore
+    }
+    logout();
+  };
+
   const navItems = [
     { name: "PRODUCTS", href: "/#showroom-registry" },
     { name: "TECHNOLOGY", href: "/#tech-showcase-section" },
-    { name: "ARCHIVE", href: "#" },
-    { name: "JOURNAL", href: "#" }
+    { name: "MISSION", href: "/#mission-statement" }
   ];
 
   return (
@@ -67,7 +91,7 @@ export function Navbar() {
           
           <button
             onClick={handleScrollToGrid}
-            className="font-mono text-[10px] tracking-[0.2em] text-[#bbf3ff] border border-[#bbf3ff]/20 px-3 py-1.5 bg-[#bbf3ff]/5 hover:bg-white hover:text-black hover:border-white transition-all duration-300 rounded-sm cursor-pointer shadow-[0_0_10px_rgba(187,243,255,0.05)] hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+            className="hidden sm:inline-block font-mono text-[10px] tracking-[0.2em] text-[#bbf3ff] border border-[#bbf3ff]/20 px-3 py-1.5 bg-[#bbf3ff]/5 hover:bg-white hover:text-black hover:border-white transition-all duration-300 rounded-sm cursor-pointer shadow-[0_0_10px_rgba(187,243,255,0.05)] hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
           >
             [ NEW ARRIVALS ]
           </button>
@@ -98,21 +122,49 @@ export function Navbar() {
         </div>
 
         {/* Technical Actions */}
-        <div className="flex items-center gap-6 font-sans text-[13px] font-medium tracking-[0.1em] text-gray-300">
+        <div className="flex items-center gap-4 sm:gap-6 font-sans text-[12px] font-medium tracking-[0.1em] text-gray-300">
           {/* Admin Command Indicator */}
           {isAuthenticated && user?.role === "admin" && (
             <Link 
               href="/admin"
-              className="text-[#bbf3ff] border border-[#bbf3ff]/20 px-3 py-1 bg-[#bbf3ff]/5 hover:bg-white hover:text-black hover:border-white transition-all text-[10px]"
+              className="text-[#bbf3ff] border border-[#bbf3ff]/20 px-3 py-1 bg-[#bbf3ff]/5 hover:bg-white hover:text-black hover:border-white transition-all text-[10px] font-mono tracking-wider"
             >
               [ COMMAND ]
             </Link>
           )}
 
+          {/* User Account or Login */}
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3">
+              <Link
+                href="/account"
+                className="flex items-center gap-1.5 hover:text-white transition-colors select-none font-mono py-1 px-2 border border-transparent hover:border-white/10 bg-[#0e0e12]/40 text-[11px]"
+                title={user?.name || "Account Ledger"}
+              >
+                <UserIcon className="w-3.5 h-3.5 text-[#bbf3ff]" />
+                <span className="hidden sm:inline">[ LEDGER ]</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-gray-500 hover:text-red-400 transition-colors p-1"
+                title="Disconnect Profile"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={toggleAuthModal}
+              className="hover:text-white transition-colors select-none font-mono py-1 px-2 border border-transparent hover:border-white/5 bg-[#0e0e12]/40 text-[11px]"
+            >
+              [ LOGIN ]
+            </button>
+          )}
+
           {/* Search Trigger */}
           <button 
             onClick={handleSearchToggle}
-            className="hover:text-white transition-colors select-none font-mono py-1 px-2 border border-transparent hover:border-white/5 bg-[#0e0e12]/40"
+            className="hover:text-white transition-colors select-none font-mono py-1 px-2 border border-transparent hover:border-white/5 bg-[#0e0e12]/40 text-[11px]"
           >
             [ SEARCH ]
           </button>
@@ -120,7 +172,7 @@ export function Navbar() {
           {/* Technical Cart Count Trigger */}
           <button 
             onClick={toggleCart} 
-            className="hover:text-white transition-colors select-none font-mono py-1 px-2 border border-transparent hover:border-white/5 bg-[#0e0e12]/40"
+            className="hover:text-white transition-colors select-none font-mono py-1 px-2 border border-transparent hover:border-white/5 bg-[#0e0e12]/40 text-[11px]"
           >
             {`[ CART: ${String(totalItems).padStart(2, "0")} ]`}
           </button>

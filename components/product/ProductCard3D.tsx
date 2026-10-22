@@ -118,7 +118,7 @@ export function ProductCard3D({ product }: ProductCard3DProps) {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="font-mono text-[9px] text-gray-600 tracking-wider uppercase">
-              ID // {product.id.slice(-6).toUpperCase()}
+              ID // {product?.id ? product.id.slice(-6).toUpperCase() : "HARDWARE"}
             </span>
             <span className="font-mono text-[9px] text-gray-600 tracking-wider uppercase">
               TAGS // {product.tags ? product.tags.join(" // ") : "HARDWARE"}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAppStore } from "@/store/useAppStore";
 
 export function CartSummary() {
-  const { cartTotal, cartItems, setHoveringInteractive } = useAppStore();
+  const { cartTotal, cartItems, setHoveringInteractive, toggleAuthModal } = useAppStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState("");
   
@@ -30,7 +30,7 @@ export function CartSummary() {
       }
 
       if (data.url) {
-        window.location.href = data.url; // Redirect to Stripe
+        window.location.href = data.url; // Redirect to Stripe or Confirmation
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -64,9 +64,19 @@ export function CartSummary() {
       </div>
 
       {error && (
-        <p className="text-[#ffa000] text-[9px] font-mono mb-3 text-center uppercase tracking-wider">
-          ERROR // {error}
-        </p>
+        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-sm text-center">
+          <p className="text-[#ffa000] text-[9px] font-mono uppercase tracking-wider mb-2">
+            ERROR // {error}
+          </p>
+          {error.toLowerCase().includes("authenticate") && (
+            <button
+              onClick={toggleAuthModal}
+              className="text-[#bbf3ff] text-[9px] underline font-mono tracking-wider uppercase hover:text-white"
+            >
+              Click here to Authenticate
+            </button>
+          )}
+        </div>
       )}
       
       <button 
@@ -74,7 +84,7 @@ export function CartSummary() {
         disabled={isProcessing || cartItems.length === 0}
         onMouseEnter={() => setHoveringInteractive(true)}
         onMouseLeave={() => setHoveringInteractive(false)}
-        className="w-full py-4 border border-white/20 hover:border-white hover:bg-white hover:text-black font-mono tracking-widest text-[9px] transition-all duration-300 rounded-sm disabled:opacity-30 disabled:cursor-not-allowed"
+        className="w-full py-4 border border-white/20 hover:border-white hover:bg-white hover:text-black font-mono tracking-widest text-[9px] transition-all duration-300 rounded-sm disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
       >
         {isProcessing ? (
           <span className="flex items-center justify-center gap-2">

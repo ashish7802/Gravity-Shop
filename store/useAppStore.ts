@@ -78,7 +78,11 @@ export const useAppStore = create<AppState>((set) => ({
   }),
 
   updateQuantity: (id, quantity) => set((state) => {
-    if (quantity <= 0) return state; // handled by remove
+    if (quantity <= 0) {
+      const newItems = state.cartItems.filter(i => i.id !== id);
+      const newTotal = newItems.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+      return { cartItems: newItems, cartTotal: newTotal };
+    }
     const newItems = state.cartItems.map(i => 
       i.id === id ? { ...i, quantity } : i
     );

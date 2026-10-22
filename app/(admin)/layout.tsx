@@ -14,16 +14,16 @@ export default function AdminLayout({
   const token = cookieStore.get("token")?.value;
 
   if (!token) {
-    redirect("/");
+    redirect("/login?redirect=/admin");
   }
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string; role: string };
     if (decoded.role !== "admin") {
-      redirect("/");
+      redirect("/login?redirect=/admin");
     }
   } catch {
-    redirect("/");
+    redirect("/login?redirect=/admin");
   }
 
   return (

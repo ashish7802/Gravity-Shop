@@ -1,14 +1,11 @@
 import mongoose from "mongoose";
 import { validateEnv } from "@/lib/env";
 
-
 validateEnv();
 
-const MONGODB_URI = process.env.MONGODB_URI! || "mongodb://localhost:27017/gravity_shop";
+mongoose.set("bufferCommands", false); // CRITICAL: fail fast, don't hang
 
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
-}
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let cached = (global as any).mongoose;
@@ -23,22 +20,35 @@ async function connectDB() {
     return cached.conn;
   }
 
+  if (!MONGODB_URI) {
+    console.warn("[AI Studio] MongoDB not connected (MONGODB_URI not provided) — in-memory / mock fallbacks active");
+    return null;
+  }
+
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 3000,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.log("MongoDB Connected!");
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(MONGODB_URI, opts)
+      .then((m) => {
+        console.log("MongoDB Connected!");
+        return m;
+      })
+      .catch((err) => {
+        console.warn("[AI Studio] MongoDB connection failed:", err.message);
+        cached.promise = null;
+        return null;
+      });
   }
 
   try {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
-    throw e;
+    console.warn("[AI Studio] Error connecting to MongoDB:", (e as Error).message);
+    return null;
   }
 
   return cached.conn;

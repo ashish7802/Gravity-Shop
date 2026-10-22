@@ -6,6 +6,8 @@ import { Order } from "@/lib/models/Order";
 import { Product } from "@/lib/models/Product";
 import { logger } from "@/lib/logger";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   const stripe = getStripe();
 
@@ -47,24 +49,34 @@ export async function POST(req: Request) {
 
       if (orderToProcess && orderToProcess.status === "pending") {
         const mongoose = (await import("mongoose")).default;
-        const dbSession = await mongoose.startSession();
-        
+        let transactionDone = false;
+
         try {
-          await dbSession.withTransaction(async () => {
-            logger.info(`Starting inventory decrement for Order ${orderToProcess._id}`);
+          const dbSession = await mongoose.startSession();
+          try {
+            await dbSession.withTransaction(async () => {
+              for (const item of orderToProcess.items) {
+                await Product.findByIdAndUpdate(
+                  item.productId, 
+                  { $inc: { stock: -item.quantity } },
+                  { session: dbSession }
+                );
+              }
+              orderToProcess.status = "paid";
+              await orderToProcess.save({ session: dbSession });
+            });
+            transactionDone = true;
+          } finally {
+            await dbSession.endSession();
+          }
+        } catch {
+          if (!transactionDone) {
             for (const item of orderToProcess.items) {
-              await Product.findByIdAndUpdate(
-                item.productId, 
-                { $inc: { stock: -item.quantity } },
-                { session: dbSession }
-              );
+              await Product.findByIdAndUpdate(item.productId, { $inc: { stock: -item.quantity } });
             }
             orderToProcess.status = "paid";
-            await orderToProcess.save({ session: dbSession });
-          });
-          logger.info(`Order ${orderToProcess._id} fulfilled successfully.`);
-        } finally {
-          await dbSession.endSession();
+            await orderToProcess.save();
+          }
         }
       }
     }

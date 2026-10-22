@@ -120,7 +120,7 @@ export default function AdminOrdersPage() {
               ) : (
                 filteredOrders.map((order) => (
                   <tr key={order._id} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
-                    <td className="p-4 font-mono text-xs text-gray-400">{order._id.slice(-8)}</td>
+                    <td className="p-4 font-mono text-xs text-gray-400">{order?._id ? order._id.slice(-8) : "ORD-N/A"}</td>
                     <td className="p-4">
                       <p className="text-sm font-bold text-white">{order.userId?.name || "Unknown Entity"}</p>
                       <p className="text-xs font-mono text-gray-500">{order.userId?.email || "N/A"}</p>

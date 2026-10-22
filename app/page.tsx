@@ -88,7 +88,7 @@ function TechShowcase() {
 // Inline Mission Statement Section
 function MissionStatement() {
   return (
-    <section className="py-48 bg-[#08080a] flex items-center justify-center text-center relative z-10 overflow-hidden">
+    <section id="mission-statement" className="py-48 bg-[#08080a] flex items-center justify-center text-center relative z-10 overflow-hidden">
       <div 
         className="absolute inset-0 bg-cover bg-center bg-fixed opacity-30"
         style={{ backgroundImage: `url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80')` }}

@@ -9,13 +9,38 @@ function ModelRenderer({ url }: { url: string }) {
   return <primitive object={scene} scale={2} position={[0, -1, 0]} />;
 }
 
+function CategoryGeometry({ category }: { category: string }) {
+  switch (category) {
+    case "Audio":
+      return <torusGeometry args={[0.85, 0.28, 24, 100]} />;
+    case "Displays":
+      return <boxGeometry args={[1.8, 1.1, 0.1]} />;
+    case "Accessories":
+      return <dodecahedronGeometry args={[0.9, 0]} />;
+    case "Peripherals":
+      return <boxGeometry args={[1.5, 0.25, 0.8]} />;
+    case "Eyewear":
+      return <cylinderGeometry args={[0.8, 0.8, 0.2, 32]} />;
+    case "Hardware":
+      return <octahedronGeometry args={[1.1]} />;
+    case "Electronics":
+      return <sphereGeometry args={[0.9, 32, 32]} />;
+    case "Sneakers":
+      return <boxGeometry args={[1.2, 0.7, 1.6]} />;
+    case "Wearables":
+      return <torusGeometry args={[0.75, 0.2, 16, 100]} />;
+    default:
+      return <icosahedronGeometry args={[0.9, 0]} />;
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ProductCanvas({ product }: { product: any }) {
   useEffect(() => {
-    if (product.modelPath) {
+    if (product?.modelPath) {
       useGLTF.preload(product.modelPath);
     }
-  }, [product.modelPath]);
+  }, [product?.modelPath]);
 
   return (
     <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
@@ -31,7 +56,7 @@ export default function ProductCanvas({ product }: { product: any }) {
         polar={[-Math.PI / 4, Math.PI / 4]}
         azimuth={[-Math.PI / 2, Math.PI / 2]}
       >
-        {product.modelPath ? (
+        {product?.modelPath ? (
           <Suspense fallback={
             <mesh>
               <boxGeometry args={[1, 1, 1]} />
@@ -42,20 +67,14 @@ export default function ProductCanvas({ product }: { product: any }) {
           </Suspense>
         ) : (
           <mesh>
-            {product.category === "Sneakers" && <boxGeometry args={[1, 1, 1]} />}
-            {product.category === "Eyewear" && <cylinderGeometry args={[0.8, 0.8, 0.2, 32]} />}
-            {product.category === "Hardware" && <octahedronGeometry args={[1]} />}
-            {product.category === "Electronics" && <sphereGeometry args={[1, 32, 32]} />}
-            {product.category === "Audio" && <torusGeometry args={[0.8, 0.25, 16, 100]} />}
-            {product.category === "Wearables" && <torusGeometry args={[0.7, 0.2, 16, 100]} />}
-            {product.category === "Peripherals" && <boxGeometry args={[1.5, 0.2, 0.8]} />}
+            <CategoryGeometry category={product?.category || "Hardware"} />
             <meshPhysicalMaterial 
               color="#15151c" 
               metalness={0.9} 
               roughness={0.15} 
               clearcoat={1} 
               emissive="#bbf3ff"
-              emissiveIntensity={0.2}
+              emissiveIntensity={0.25}
             />
           </mesh>
         )}

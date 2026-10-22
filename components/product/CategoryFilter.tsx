@@ -3,27 +3,26 @@
 import { motion } from "framer-motion";
 import { useAppStore } from "@/store/useAppStore";
 
-export const CATEGORIES = ["All", "Eyewear", "Audio", "Wearables", "Peripherals", "Apparel"];
-
 interface CategoryFilterProps {
+  categories?: string[];
   activeCategory: string;
   onSelect: (category: string) => void;
 }
 
-export function CategoryFilter({ activeCategory, onSelect }: CategoryFilterProps) {
+export function CategoryFilter({ categories = ["All", "Audio", "Accessories", "Displays"], activeCategory, onSelect }: CategoryFilterProps) {
   const { setHoveringInteractive } = useAppStore();
 
   return (
-    <div className="flex flex-wrap justify-center gap-3 mb-16 font-mono text-[10px] tracking-widest">
-      {CATEGORIES.map((category) => {
-        const isActive = activeCategory === category;
+    <div className="flex flex-wrap justify-center sm:justify-start gap-2 mb-10 font-mono text-[10px] tracking-widest">
+      {categories.map((category) => {
+        const isActive = activeCategory.toLowerCase() === category.toLowerCase();
         return (
           <button
             key={category}
             onClick={() => onSelect(category)}
             onMouseEnter={() => setHoveringInteractive(true)}
             onMouseLeave={() => setHoveringInteractive(false)}
-            className="relative px-6 py-3 rounded-none transition-colors uppercase"
+            className="relative px-5 py-2.5 rounded-sm transition-colors uppercase cursor-pointer"
           >
             <span className={`relative z-10 transition-colors duration-300 ${isActive ? "text-black font-bold" : "text-gray-400 hover:text-white"}`}>
               {category}

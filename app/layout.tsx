@@ -46,8 +46,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${robotoMono.variable}`}>
-      <body className="bg-[#08080a] text-[#e2e8f0] antialiased selection:bg-[#bbf3ff]/30 selection:text-[#bbf3ff]">
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${robotoMono.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var _origFetch = window.fetch ? window.fetch.bind(window) : null;
+                Object.defineProperty(window, 'fetch', {
+                  configurable: true,
+                  enumerable: true,
+                  get: function() { return _origFetch; },
+                  set: function(fn) { _origFetch = fn; }
+                });
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
+      <body suppressHydrationWarning className="bg-[#08080a] text-[#e2e8f0] antialiased selection:bg-[#bbf3ff]/30 selection:text-[#bbf3ff]">
         <LenisProvider>
           <CartDrawer />
           <AuthModal />

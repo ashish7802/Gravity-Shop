@@ -123,7 +123,7 @@ export default function AdminAnalyticsPage() {
               ) : (
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 data?.lowStock?.map((item: any) => (
-                  <div key={item._id} className="flex justify-between items-center border-b border-white/5 pb-2">
+                  <div key={item._id || item.name} className="flex justify-between items-center border-b border-white/5 pb-2">
                     <span className="text-white text-sm">{item.name}</span>
                     <span className="text-yellow-500 font-mono text-xs bg-yellow-500/10 px-2 py-1 rounded">
                       {item.stock} LEFT

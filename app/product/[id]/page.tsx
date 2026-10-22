@@ -2,6 +2,9 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/ui/Navbar";
 import { ProductDetails } from "@/components/product/ProductDetails";
+import connectDB from "@/lib/db/connect";
+import { Product } from "@/lib/models/Product";
+import mongoose from "mongoose";
 
 export const revalidate = 60; // ISR every 60 seconds
 
@@ -69,7 +72,25 @@ const MOCK_PRODUCTS = [
 ];
 
 async function getProduct(id: string) {
-  return MOCK_PRODUCTS.find(p => p._id === id) || null;
+  try {
+    const conn = await connectDB();
+    if (conn) {
+      const isObjectId = mongoose.isValidObjectId(id);
+      const query = isObjectId ? { $or: [{ _id: id }, { slug: id }] } : { slug: id };
+      const dbProduct = await Product.findOne(query).lean();
+      if (dbProduct) return dbProduct;
+    }
+  } catch {
+    // DB lookup error / offline
+  }
+
+  return MOCK_PRODUCTS.find(p => p._id === id || (p as { slug?: string }).slug === id) || null;
+}
+
+export async function generateStaticParams() {
+  return MOCK_PRODUCTS.map((p) => ({
+    id: p._id,
+  }));
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
@@ -97,11 +118,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
   // Convert ObjectIds to strings for client components
   const safeProduct = {
     ...product,
-    _id: product._id.toString(),
+    _id: product._id ? product._id.toString() : product.id || params.id,
   };
 
   const relatedQuery = MOCK_PRODUCTS.filter(
-    (p) => p.category === product.category && p._id !== product._id
+    (p) => p.category === product.category && p._id !== safeProduct._id
   ).slice(0, 4);
 
   const relatedProducts = relatedQuery.map((p) => ({

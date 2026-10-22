@@ -109,7 +109,7 @@ export default function AdminUsersPage() {
                 <div className="col-span-4 flex items-center gap-3 relative z-10">
                   <div>
                     <p className="font-bold text-white text-sm">{user.name}</p>
-                    <p className="text-xs text-gray-500 font-mono">ID: {user._id.substring(0, 8)}</p>
+                    <p className="text-xs text-gray-500 font-mono">ID: {user?._id ? user._id.substring(0, 8) : "OPERATOR"}</p>
                   </div>
                 </div>
                 

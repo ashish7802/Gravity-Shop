@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useAppStore } from "@/store/useAppStore";
 import { SafeImage } from "@/components/ui/SafeImage";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import React from "react";
 
 const ProductCanvas = dynamic(() => import("./ProductCanvas"), { 
@@ -50,7 +51,7 @@ export function ProductDetails({ product, related }: { product: Product, related
     { name: "PAYLOAD CAPACITY", value: `${product.stock} SYSTEM CHANNELS` },
     { name: "NOMINAL FREQUENCY", value: "142 GHz CRYPTOGRAPHIC SYNC" },
     { name: "INPUT DISPATCH RATE", value: "0.15ms TELEMETRY OVERLAY" },
-    { name: "ACQUISITION KEY", value: `HEX-${product._id.slice(-8).toUpperCase()}` }
+    { name: "ACQUISITION KEY", value: product?._id ? `HEX-${product._id.slice(-8).toUpperCase()}` : "HEX-SYSTEM" }
   ];
 
   return (
@@ -275,7 +276,7 @@ export function ProductDetails({ product, related }: { product: Product, related
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 border border-white/5">
               {related.map((rel) => (
                 <div key={rel._id} className="group relative bg-[#0e0e12]">
-                  <a href={`/product/${rel._id}`} className="block p-6 h-full flex flex-col justify-between">
+                  <Link href={`/product/${rel._id}`} className="block p-6 h-full flex flex-col justify-between">
                     <div className="relative h-48 w-full flex items-center justify-center p-4 bg-black/10 mb-6 overflow-hidden">
                       <SafeImage 
                         src={rel.image} 
@@ -293,7 +294,7 @@ export function ProductDetails({ product, related }: { product: Product, related
                       </div>
                       <h3 className="font-bold text-sm text-[#e2e8f0] group-hover:text-white uppercase transition-colors leading-tight">{rel.name}</h3>
                     </div>
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>

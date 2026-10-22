@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 const MOCK_PRODUCTS = [
   {
     _id: "64a1b2c3d4e5f60000000001",
